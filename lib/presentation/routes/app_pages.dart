@@ -6,12 +6,10 @@ import '../screens/screens.dart';
 class AppPages {
   static final routerDelagate = BeamerDelegate(
     locationBuilder: RoutesLocationBuilder(
-      
       routes: {
-        AppRouteNames.homeScreen: (context, state, data) => const HomeScreen(),
-        AppRouteNames.loginScree: (context, state, data) => const LoginScreen(),
-        AppRouteNames.signupScreen: (context, state, data) =>
-            const SignUpScreen(),
+        AppRouteNames.homeScreen: (context, state, data) => HomeScreen(),
+        AppRouteNames.loginScree: (context, state, data) => LoginScreen(),
+        AppRouteNames.signupScreen: (context, state, data) => SignUpScreen(),
       },
     ),
   );
