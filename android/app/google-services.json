@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "961655268214",
+    "project_id": "amata-blog",
+    "storage_bucket": "amata-blog.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961655268214:android:7f1a3e91b4f6c464af5057",
+        "android_client_info": {
+          "package_name": "com.example.amata_blog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961655268214-armt7au9gl8o2ano32rltjq279ld1be5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amata_blog",
+            "certificate_hash": "3df15ca132b58e43047d7b9650b7e462e6f9eb14"
+          }
+        },
+        {
+          "client_id": "961655268214-jhtpohnvgfunh979redb27hisv9i118r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDPhjtz-9mI1vgjggg2I_CZRcRk2sLFHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961655268214-jhtpohnvgfunh979redb27hisv9i118r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
