@@ -47,6 +47,8 @@ dependencies:
   json_annotation: ^4.6.0
   # storing data locall
   hydrated_bloc: ^8.1.0
+  # navigation staff
+  beamer: ^1.5.2
 
 dev_dependencies:
   flutter_test:
