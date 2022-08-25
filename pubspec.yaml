@@ -50,6 +50,7 @@ dependencies:
   # navigation staff
   beamer: ^1.5.2
   flutter_svg: ^1.1.4
+  firebase_storage: ^10.3.7
 
 dev_dependencies:
   flutter_test:
