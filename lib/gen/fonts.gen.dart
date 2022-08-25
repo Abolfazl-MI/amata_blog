@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: bebas
   static const String bebas = 'bebas';
+
+  /// Font family: roboto
+  static const String roboto = 'roboto';
 }

@@ -22,15 +22,20 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData(
           scaffoldBackgroundColor: SolidColors.gray,
-          fontFamily: FontFamily.bebas,
+          fontFamily: FontFamily.roboto,
           textTheme: TextTheme(
               headline1: TextStyle(
                   fontSize: 35,
                   fontFamily: FontFamily.bebas,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
-              caption: TextStyle(
+              headline2: TextStyle(
+                  fontSize: 20,
                   fontFamily: FontFamily.bebas,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+              caption: TextStyle(
+                  fontFamily: FontFamily.roboto,
                   fontSize: 20,
                   color: Colors.white))),
       debugShowCheckedModeBanner: false,
