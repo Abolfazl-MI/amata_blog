@@ -49,31 +49,7 @@ class AuthRepository {
     }
   }
 
-// incomplited function , sould complite codes
-  Future<RawData> updateSinginCreadentials(
-      {required File profileImage,
-      required String userName,
-      required String userEmailAdress,
-      required String userPassword}) async {
-    try {
-      log('**********updating use info wti {username:$userName, imagepath${profileImage.path}}**********',
-          name: 'Auth_Repository');
-      String userProfileUrl = '';
-      //TODO: file uploade to colud storage then implent the uploadProccess
-      AmataUser user = AmataUser(
-          emailAddrress: userEmailAdress,
-          password: userPassword,
-          profileUrl: userProfileUrl,
-          savedArticles: [],
-          userName: userName);
-      DocumentReference resualt = await _userRef.add(user.toJson());
 
-      return RawData(opereationResualt: OpereationResualt.succes, data: true);
-    } catch (e) {
-      return RawData(
-          opereationResualt: OpereationResualt.fail, data: e.toString());
-    }
-  }
 
   Future<RawData> signupWithEmailAndPssword(
       {required String email, required String password}) async {
