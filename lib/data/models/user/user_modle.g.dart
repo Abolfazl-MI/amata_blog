@@ -8,7 +8,6 @@ part of 'user_modle.dart';
 
 AmataUser _$AmataUserFromJson(Map<String, dynamic> json) => AmataUser(
       emailAddrress: json['emailAddrress'] as String?,
-      password: json['password'] as String?,
       profileUrl: json['profileUrl'] as String?,
       savedArticles: (json['savedArticles'] as List<dynamic>?)
           ?.map((e) => Article.fromJson(e as Map<String, dynamic>))
@@ -19,7 +18,6 @@ AmataUser _$AmataUserFromJson(Map<String, dynamic> json) => AmataUser(
 Map<String, dynamic> _$AmataUserToJson(AmataUser instance) => <String, dynamic>{
       'userName': instance.userName,
       'emailAddrress': instance.emailAddrress,
-      'password': instance.password,
       'profileUrl': instance.profileUrl,
       'savedArticles': instance.savedArticles,
     };
