@@ -1,7 +1,7 @@
 import 'package:blog_app/core/opereation_enum.dart';
 
 class RawData {
-  OpereationResualt? opereationResualt;
+  OperationResult? operationResult;
   dynamic data;
-  RawData({this.data, this.opereationResualt});
+  RawData({this.data, this.operationResult});
 }

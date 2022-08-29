@@ -26,6 +26,4 @@ class ForgetPasswordEvent extends AuthEvent {
   const ForgetPasswordEvent({required this.emailAddress});
 }
 
-class LogOutEvent extends AuthEvent{
-  
-}
+

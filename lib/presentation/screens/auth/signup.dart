@@ -1,15 +1,20 @@
+import 'package:beamer/beamer.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
+import 'package:blog_app/logic/auth_bloc/auth_bloc.dart';
+import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
+import 'package:blog_app/presentation/screens/global/widgets/button.dart';
 import 'package:blog_app/presentation/screens/global/widgets/feilds.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
   TextEditingController emailTextcontroller = TextEditingController();
   TextEditingController passwordTextcontroller = TextEditingController();
-  TextEditingController userNameTextcontroller = TextEditingController();
+  // TextEditingController userNameTextcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,103 +26,120 @@ class SignUpScreen extends StatelessWidget {
   _builBody(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Container(
-        width: width,
-        height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Transform.scale(
-              scale: 0.4,
-              child: Image.asset(
-                Assets.images.amataLogo.path,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              'Amata Blog',
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall!
-                  .copyWith(color: Colors.white, fontFamily: FontFamily.bebas),
-            ),
-            AppTextFormFeilds(
-                hintText: 'Enter Your Email here',
-                isFilled: true,
-                fillColor: SolidColors.darkGrey,
-                feildIcon: Icons.email_outlined,
-                isPasswordFeild: false,
-                controller: emailTextcontroller),
-            AppTextFormFeilds(
-                hintText: 'Enter Your UserName here',
-                isFilled: true,
-                fillColor: SolidColors.darkGrey,
-                feildIcon: Icons.person_outline,
-                isPasswordFeild: false,
-                controller: emailTextcontroller),
-            AppTextFormFeilds(
-              isFilled: true,
-              fillColor: SolidColors.darkGrey,
-              hintText: 'Enter Your Password here',
-              feildIcon: Icons.lock_open_rounded,
-              isPasswordFeild: true,
-              controller: passwordTextcontroller,
-            ),
-            Container(
-              width: width,
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: SolidColors.red),
-              child: Center(
-                child: Text(
-                  'LogIn',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: ((context, state) {
+        if (state is AuthenticatedState) {
+          print('authenticated');
+          Beamer.of(context).beamToReplacementNamed(
+              AppRouteNames.completeInfoScreen,
+              data: {'user': state.user});
+        }
+        if (state is ErrorState) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.err)));
+          });
+        }
+      }),
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          width: width,
+          height: height,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Transform.scale(
+                scale: 0.4,
+                child: Image.asset(
+                  Assets.images.amataLogo.path,
+                  color: Colors.white,
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      color: SolidColors.darkGrey,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Center(
-                    child: SvgPicture.asset(Assets.icons.gmail),
+              Text(
+                'Amata Blog',
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                    color: Colors.white, fontFamily: FontFamily.bebas),
+              ),
+              AppTextFormFeilds(
+                  hintText: 'Enter Your Email here',
+                  isFilled: true,
+                  fillColor: SolidColors.darkGrey,
+                  feildIcon: Icons.email_outlined,
+                  isPasswordFeild: false,
+                  controller: emailTextcontroller),
+              AppTextFormFeilds(
+                isFilled: true,
+                fillColor: SolidColors.darkGrey,
+                hintText: 'Enter Your Password here',
+                feildIcon: Icons.lock_open_rounded,
+                isPasswordFeild: true,
+                controller: passwordTextcontroller,
+              ),
+              AppButton(
+                onTap: () {
+                  BlocProvider.of<AuthBloc>(context).add(SignUpWithEmailEvent(
+                      emailAddress: emailTextcontroller.text,
+                      password: passwordTextcontroller.text));
+                },
+                buttonColor: SolidColors.red,
+                width: width,
+                hintText: 'Signup',
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: SolidColors.darkGrey,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Center(
+                      child: SvgPicture.asset(Assets.icons.gmail),
+                    ),
                   ),
-                ),
-                Container(
-                  width: 70,
-                  height: 70,
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      color: SolidColors.darkGrey,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Center(
-                    child: Transform.scale(
-                        scale: 0.7,
-                        child: SvgPicture.asset(
-                          Assets.icons.phone,
-                        )),
-                  ),
-                )
-              ],
-            ),
-            TextButton(
-                onPressed: () {},
-                child: RichText(
-                    text: TextSpan(text: 'Have an account?', children: [
-                  TextSpan(
-                      text: 'Login', style: TextStyle(color: SolidColors.red))
-                ]))),
-          ],
+                  Container(
+                    width: 70,
+                    height: 70,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: SolidColors.darkGrey,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Center(
+                      child: Transform.scale(
+                          scale: 0.7,
+                          child: SvgPicture.asset(
+                            Assets.icons.phone,
+                          )),
+                    ),
+                  )
+                ],
+              ),
+              TextButton(
+                  onPressed: () {
+                    Beamer.of(context)
+                        .beamToReplacementNamed(AppRouteNames.loginScree);
+                  },
+                  child: RichText(
+                      text: TextSpan(text: 'Have an account?', children: [
+                    TextSpan(
+                        text: 'Login', style: TextStyle(color: SolidColors.red))
+                  ]))),
+
+                  TextButton(
+                  onPressed: () {
+                    //TODO: navigate to forgot password page
+                  },
+                  child: RichText(
+                      text: TextSpan(text: 'Forgot password?', children: [
+                    TextSpan(
+                        text: 'reset Password', style: TextStyle(color: SolidColors.red))
+                  ]))),
+            ],
+          ),
         ),
       ),
     );
