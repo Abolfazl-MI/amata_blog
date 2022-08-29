@@ -1,6 +1,6 @@
 
 
-enum OpereationResualt{
-  succes, 
+enum OperationResult{
+  success, 
   fail
 }

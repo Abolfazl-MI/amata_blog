@@ -22,7 +22,19 @@ class UnAuthenticatedState extends AuthState {
 }
 
 class AuthenticatedState extends AuthState {
-  final AuthState authState;
   final User user;
-  const AuthenticatedState(this.authState, this.user);
+  const AuthenticatedState(this.user);
+}
+
+class LoadingState extends AuthState {}
+
+class ErrorState extends AuthState {
+  final String err;
+
+  ErrorState(this.err);
+
+}
+
+class ForgetPasswordState extends AuthState{
+
 }

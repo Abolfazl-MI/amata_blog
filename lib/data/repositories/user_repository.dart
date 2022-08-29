@@ -26,9 +26,9 @@ class UserRepository {
           savedArticles: []);
       await _userRef.doc(user.uid).set(amtaUser.toJson());
 
-      return RawData(opereationResualt: OpereationResualt.succes, data: true);
+      return RawData(operationResult: OperationResult.success, data: true);
     } catch (e) {
-      return RawData(opereationResualt: OpereationResualt.fail, data: false);
+      return RawData(operationResult: OperationResult.fail, data: false);
     }
   }
 }

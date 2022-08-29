@@ -30,7 +30,7 @@ class AppTextFormFeilds extends StatelessWidget {
       controller: controller,
       obscureText: isPasswordFeild,
       style: textStyle ??
-          TextStyle(color: Colors.white, fontFamily: FontFamily.bebas),
+          TextStyle(color: Colors.white, fontFamily: FontFamily.roboto),
       decoration: InputDecoration(
         focusColor: Colors.white,
         fillColor: fillColor ?? Colors.grey,
