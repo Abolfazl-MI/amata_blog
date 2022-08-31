@@ -1,4 +1,8 @@
+import 'package:beamer/beamer.dart';
+import 'package:blog_app/core/core.dart';
+import 'package:blog_app/data/repositories/auth_repository.dart';
 import 'package:blog_app/gen/assets.gen.dart';
+import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -66,7 +70,30 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-              )
+              ),
+              InkWell(
+                onTap: () {
+                  AuthRepository().logOut().then((value) {
+                    if (value.operationResult == OperationResult.success) {
+                      context
+                          .beamToReplacementNamed(AppRouteNames.signUpScreen);
+                    }
+                  });
+                },
+                child: Card(
+                  color: SolidColors.gray,
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.logout_rounded,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
-import 'package:blog_app/logic/auth_bloc/auth_bloc.dart';
+import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
+import 'package:blog_app/Blocs/splash_cubit/splash_cubit.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/auth/forgetpassword_screen.dart';
 import 'package:blog_app/presentation/screens/splash/splash_screen.dart';
@@ -12,7 +13,8 @@ class AppPages {
   static final routerDelagate = BeamerDelegate(
     locationBuilder: RoutesLocationBuilder(
       routes: {
-        // AppRouteNames.splashScreen: (context, state, data) => SplashScreen(),
+        AppRouteNames.splashScreen: (context, state, data) => BlocProvider(
+            create: (context) => SplashCubit()..cheackUserLogin(), child: SplashScreen()),
         AppRouteNames.homeScreen: (context, state, data) => HomeScreen(),
         AppRouteNames.loginScree: (context, state, data) =>
             BlocProvider(create: (context) => AuthBloc(), child: LoginScreen()),
@@ -20,7 +22,7 @@ class AppPages {
             create: (context) => AuthBloc(), child: SignUpScreen()),
         AppRouteNames.completeInfoScreen: (context, state, data) =>
             CompleteUserInformation(),
-       '/': (context, state, data) =>
+        AppRouteNames.forgetPassScreen: (context, state, data) =>
             ForgetPasswordScreen()
       },
     ),

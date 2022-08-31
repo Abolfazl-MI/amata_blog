@@ -15,20 +15,30 @@ class UserRepository {
       required String userName,
       required File profileImage}) async {
     try {
-      await _userStorageRef.ref(user.uid).putFile(profileImage);
-      String profileLinke =
-          await _userStorageRef.ref(user.uid).getDownloadURL();
+      String fileName = profileImage.path.split('/').last;
+      Reference profileBucket = _userStorageRef
+          .ref()
+          .child('profiles')
+          .child(userName)
+          .child(fileName);
+      TaskSnapshot uploadTask = await profileBucket.putFile(profileImage);
+      //  TaskSnapshot taskSnapshot= await _userStorageRef.ref().child(path).putFile(profileImage);
+      String? profileLink;
+      if (uploadTask.state == TaskState.success) {
+        profileLink = await profileBucket.getDownloadURL();
+      }
 
+      print(profileLink);
       AmataUser amtaUser = AmataUser(
           emailAddrress: user.email,
-          userName: user.displayName,
-          profileUrl: profileLinke,
+          userName: userName,
+          profileUrl: profileLink,
           savedArticles: []);
       await _userRef.doc(user.uid).set(amtaUser.toJson());
 
       return RawData(operationResult: OperationResult.success, data: true);
     } catch (e) {
-      return RawData(operationResult: OperationResult.fail, data: false);
+      return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
 }

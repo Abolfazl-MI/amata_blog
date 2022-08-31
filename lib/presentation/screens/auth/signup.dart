@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
-import 'package:blog_app/logic/auth_bloc/auth_bloc.dart';
+import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:blog_app/presentation/screens/global/widgets/button.dart';
@@ -128,16 +128,7 @@ class SignUpScreen extends StatelessWidget {
                     TextSpan(
                         text: 'Login', style: TextStyle(color: SolidColors.red))
                   ]))),
-
-                  TextButton(
-                  onPressed: () {
-                    //TODO: navigate to forgot password page
-                  },
-                  child: RichText(
-                      text: TextSpan(text: 'Forgot password?', children: [
-                    TextSpan(
-                        text: 'reset Password', style: TextStyle(color: SolidColors.red))
-                  ]))),
+            
             ],
           ),
         ),

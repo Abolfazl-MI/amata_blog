@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/models/user/user_modle.dart';
+import 'package:blog_app/data/repositories/pref_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,8 @@ import 'package:blog_app/core/firebase_erro_helper.dart';
 class AuthRepository {
   CollectionReference _userRef = FirebaseFirestore.instance.collection('users');
   final user_storage = FirebaseStorage.instance;
+  final PrefRepository _prefRepository = PrefRepository();
+
   //  loges out user from firebase auth
   Future<RawData> logOut() async {
     try {
@@ -39,7 +42,9 @@ class AuthRepository {
 
       UserCredential user = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-          
+      await _prefRepository.saveToken(user.credential!.token.toString());
+      String userUid = user.user!.uid;
+      await _prefRepository.saveToken(userUid);
       return RawData(operationResult: OperationResult.success, data: user.user);
     } on FirebaseAuthException catch (e) {
       String message = e.getErrorMessage();
@@ -57,6 +62,9 @@ class AuthRepository {
 
       UserCredential user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      String userUid = user.user!.uid;
+      await _prefRepository.saveToken(userUid);
       return RawData(operationResult: OperationResult.success, data: user.user);
     } on FirebaseAuthException catch (e) {
       String message = e.getErrorMessage();

@@ -44,14 +44,18 @@ dependencies:
   # value quality
   equatable: ^2.0.5
   # data serlizer
-  json_annotation: ^4.6.0
-  # storing data locall
-  hydrated_bloc: ^8.1.0
+  json_annotation: ^4.6.0  
   # navigation staff
   beamer: ^1.5.2
+  #  for using svg in project 
   flutter_svg: ^1.1.4
+  # firbase database
   firebase_storage: ^10.3.7
-
+  shared_preferences: ^2.0.15
+  image_picker: ^0.8.5+3
+  # for storing user information
+  # sharedpreference: ^0.0.1
+   
 dev_dependencies:
   flutter_test:
     sdk: flutter

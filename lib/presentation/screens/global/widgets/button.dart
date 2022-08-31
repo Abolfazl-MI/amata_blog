@@ -11,13 +11,14 @@ class AppButton extends StatelessWidget {
       required this.hintText,
       required this.buttonColor,
       required this.onTap,
-      required this.width, this.hintTextStyle})
+      required this.width,
+      this.hintTextStyle})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap,
+      onTap: onTap,
       child: Container(
         width: width,
         height: 50,
@@ -26,7 +27,8 @@ class AppButton extends StatelessWidget {
         child: Center(
           child: Text(
             hintText,
-            style:hintTextStyle?? TextStyle(color: Colors.white, fontSize: 20),
+            style:
+                hintTextStyle ?? TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
       ),
