@@ -117,9 +117,10 @@ class LoginScreen extends StatelessWidget {
                     ]))),
                 TextButton(
                     onPressed: () {
+                     
                       //TODO: navigate to forgot password page
                       context.beamToReplacementNamed(
-                          AppRouteNames.forgetPassScreen);
+                          AppRouteNames.forgetPassScreen, data: emailController.text);
                     },
                     child: RichText(
                         text: TextSpan(text: 'Forgot password?', children: [

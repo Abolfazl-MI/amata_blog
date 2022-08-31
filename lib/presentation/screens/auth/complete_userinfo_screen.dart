@@ -151,7 +151,7 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
                           profileImage: finalImage!)
                       .then((value) {
                     if (value.operationResult == OperationResult.success) {
-                      context.beamToReplacementNamed(AppRouteNames.homeScreen);
+                      context.beamToReplacementNamed(AppRouteNames.homeScreen,);
                     }
                     if (value.operationResult == OperationResult.fail) {
                       ScaffoldMessenger.of(context)
@@ -159,25 +159,6 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
                     }
                   });
                 }
-                // if (finalImage != null) {
-                //   User currentUser = context.currentBeamLocation.data ;
-                //   UserRepository()
-                //       .updateCredentials(
-                //           user: currentUser,
-                //           userName: userNameController.text,
-                //           profileImage: finalImage!)
-                //       .then((value) {
-                //     if (value.operationResult == OperationResult.success) {
-                //       context.beamToReplacementNamed(AppRouteNames.homeScreen);
-                //     }
-                //     if (value.operationResult == OperationResult.fail) {
-                //       ScaffoldMessenger.of(context)
-                //           .showSnackBar(SnackBar(content: Text(value.data)));
-                //     }
-                //   });
-                // }
-
-                // print(context.currentBeamLocation.data);
               },
               width: width * 0.5,
               hintTextStyle: TextStyle(

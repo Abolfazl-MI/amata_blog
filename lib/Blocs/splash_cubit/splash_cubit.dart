@@ -16,11 +16,15 @@ class SplashCubit extends Cubit<SplashState> {
       emit(UnRegisteredState());
     }
     if (token != null) {
-      String userUid = await _firebaseAuth.currentUser!.uid;
-      print(token == userUid);
-      print(await _firebaseAuth.currentUser!.email);
-      if (token == userUid) {
-        emit(RegisteredState());
+      User? user = _firebaseAuth.currentUser;
+      String? userUid = await user?.uid;
+
+      if (userUid != null) {
+        if (token == userUid) {
+          emit(RegisteredState());
+        } else {
+          emit(UnRegisteredState());
+        }
       } else {
         emit(UnRegisteredState());
       }
