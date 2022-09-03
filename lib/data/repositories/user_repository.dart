@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:blog_app/core/core.dart';
+import 'package:blog_app/data/models/articles/article_modle.dart';
 import 'package:blog_app/data/models/user/user_modle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,7 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class UserRepository {
   final CollectionReference _userRef =
-      FirebaseFirestore.instance.collection(DatabseConstants.usersCollection);
+      FirebaseFirestore.instance.collection(DatabaseConstants.usersCollection);
   final _userStorageRef = FirebaseStorage.instance;
   Future<RawData> updateCredentials(
       {required User user,
@@ -41,29 +43,55 @@ class UserRepository {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
-}
- /* // incomplited function , sould complite codes
-  Future<RawData> updateSinginCreadentials(
-      {required File profileImage,
-      required String userName,
-      required String userEmailAdress,
-      required String userPassword}) async {
-    try {
-      log('**********updating use info wti {username:$userName, imagepath${profileImage.path}}**********',
-          name: 'Auth_Repository');
-      String userProfileUrl = '';
-      //TODO: file uploade to colud storage then implent the uploadProccess
-      AmataUser user = AmataUser(
-          emailAddrress: userEmailAdress,
-          password: userPassword,
-          profileUrl: userProfileUrl,
-          savedArticles: [],
-          userName: userName);
-      DocumentReference resualt = await _userRef.add(user.toJson());
 
-      return RawData(opereationResualt: OpereationResualt.succes, data: true);
+  Future<RawData> saveArticleToReadingList(
+      {required User user, required Article article}) async {
+    try {
+      log('****************saving article for ${user.email} user****************',
+          name: 'user_repository');
+      var document = await _userRef.doc(user.uid).get();
+      if (document.exists) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        AmataUser amataUser = AmataUser.fromJson(data);
+        amataUser.savedArticles?.add(article);
+        await _userRef.doc(user.uid).update(amataUser.toJson());
+        return RawData(
+            operationResult: OperationResult.success,
+            data: amataUser.savedArticles);
+      } else {
+        return RawData(
+            operationResult: OperationResult.fail, data: 'sth went wrong');
+      }
+    } catch (e) {
+      return RawData(operationResult: OperationResult.fail, data: e.toString());
+    }
+  }
+
+  Future<RawData> deleteArticleReadingList(
+      {required User user, required Article article}) async {
+    try {
+      log('*******delteing article from reading list******');
+      var documnet = await _userRef.doc(user.uid).get();
+      if (documnet.exists) {
+        Map<String, dynamic> data = documnet.data() as Map<String, dynamic>;
+        AmataUser amataUser = AmataUser.fromJson(data);
+        amataUser.savedArticles?.remove(article);
+        await _userRef.doc(user.uid).update(amataUser.toJson());
+        return RawData(
+          operationResult: OperationResult.success,
+          data: amataUser.savedArticles
+        );
+      } else {
+        return RawData(
+          operationResult: OperationResult.fail, 
+          data: 'sth went wrong'
+        );
+      }
     } catch (e) {
       return RawData(
-          opereationResualt: OpereationResualt.fail, data: e.toString());
+        operationResult: OperationResult.fail, 
+        data: e.toString()
+      );
     }
-  } */
+  }
+}
