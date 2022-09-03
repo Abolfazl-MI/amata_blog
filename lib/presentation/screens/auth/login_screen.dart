@@ -73,37 +73,37 @@ class LoginScreen extends StatelessWidget {
                   hintText: 'Login',
                   width: width,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: SolidColors.darkGrey,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Center(
-                        child: SvgPicture.asset(Assets.icons.gmail),
-                      ),
-                    ),
-                    Container(
-                      width: 70,
-                      height: 70,
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: SolidColors.darkGrey,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Center(
-                        child: Transform.scale(
-                            scale: 0.7,
-                            child: SvgPicture.asset(
-                              Assets.icons.phone,
-                            )),
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     Container(
+                //       width: 70,
+                //       height: 70,
+                //       padding: EdgeInsets.all(12),
+                //       decoration: BoxDecoration(
+                //           color: SolidColors.darkGrey,
+                //           borderRadius: BorderRadius.circular(12)),
+                //       child: Center(
+                //         child: SvgPicture.asset(Assets.icons.gmail),
+                //       ),
+                //     ),
+                //     Container(
+                //       width: 70,
+                //       height: 70,
+                //       padding: EdgeInsets.all(12),
+                //       decoration: BoxDecoration(
+                //           color: SolidColors.darkGrey,
+                //           borderRadius: BorderRadius.circular(12)),
+                //       child: Center(
+                //         child: Transform.scale(
+                //             scale: 0.7,
+                //             child: SvgPicture.asset(
+                //               Assets.icons.phone,
+                //             )),
+                //       ),
+                //     )
+                //   ],
+                // ),
                 TextButton(
                     onPressed: () {
                       Beamer.of(context)
