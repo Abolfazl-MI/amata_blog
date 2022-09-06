@@ -7,11 +7,24 @@ import 'package:blog_app/data/models/user/user_modle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 class UserRepository {
-  final CollectionReference _userRef =
-      FirebaseFirestore.instance.collection(DatabaseConstants.usersCollection);
-  final _userStorageRef = FirebaseStorage.instance;
+  final FirebaseAuth _firebaseAuth;
+  final CollectionReference _userRef;
+
+  final FirebaseStorage _userStorageRef;
+
+  UserRepository(
+      {FirebaseAuth? firebaseAuth,
+      CollectionReference? userRef,
+      FirebaseStorage? userStorageRef})
+      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        _userRef = userRef ??
+            FirebaseFirestore.instance
+                .collection(DatabaseConstants.usersCollection),
+        _userStorageRef = userStorageRef ?? FirebaseStorage.instance;
+
   Future<RawData> updateCredentials(
       {required User user,
       required String userName,
@@ -78,20 +91,28 @@ class UserRepository {
         amataUser.savedArticles?.remove(article);
         await _userRef.doc(user.uid).update(amataUser.toJson());
         return RawData(
-          operationResult: OperationResult.success,
-          data: amataUser.savedArticles
-        );
+            operationResult: OperationResult.success,
+            data: amataUser.savedArticles);
       } else {
         return RawData(
-          operationResult: OperationResult.fail, 
-          data: 'sth went wrong'
-        );
+            operationResult: OperationResult.fail, data: 'sth went wrong');
       }
     } catch (e) {
-      return RawData(
-        operationResult: OperationResult.fail, 
-        data: e.toString()
-      );
+      return RawData(operationResult: OperationResult.fail, data: e.toString());
+    }
+  }
+
+  Future<RawData> getProfileInfo() async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+      if (user != null) {
+        return RawData(operationResult: OperationResult.success, data: user);
+      } else {
+        return RawData(
+            operationResult: OperationResult.fail, data: 'cant get user');
+      }
+    } catch (e) {
+      return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
 }
