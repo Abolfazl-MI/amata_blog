@@ -11,8 +11,8 @@ class HomeLoadingState extends HomeState {}
 
 class HomeLoadedState extends HomeState {
   final List<Article> articles;
-
-  const HomeLoadedState(this.articles);
+  final AmataUser? amataUser;
+  const HomeLoadedState(this.articles,{this.amataUser});
 }
 
 class HomeErrorState extends HomeState {

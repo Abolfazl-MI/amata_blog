@@ -104,12 +104,24 @@ class UserRepository {
 
   Future<RawData> getProfileInfo() async {
     try {
-      User? user = _firebaseAuth.currentUser;
-      if (user != null) {
-        return RawData(operationResult: OperationResult.success, data: user);
+      // User? user = _firebaseAuth.currentUser;
+      // if (user != null) {
+      //   return RawData(operationResult: OperationResult.success, data: user);
+      // } else {
+      //   return RawData(
+      //       operationResult: OperationResult.fail, data: 'cant get user');
+      // }
+      var result =
+          await _userRef.doc(await _firebaseAuth.currentUser!.uid).get();
+      if (result.exists) {
+        AmataUser amataUser =
+            AmataUser.fromJson(result.data() as Map<String, dynamic>);
+        return RawData(
+            operationResult: OperationResult.success, data: amataUser);
       } else {
         return RawData(
-            operationResult: OperationResult.fail, data: 'cant get user');
+            operationResult: OperationResult.fail,
+            data: 'The use info didnt find');
       }
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());

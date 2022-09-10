@@ -1,10 +1,15 @@
 import 'package:beamer/beamer.dart';
+import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/auth_repository.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,17 +26,68 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: SolidColors.darkGrey,
           child: Column(
             children: [
-              UserAccountsDrawerHeader(
-                margin: EdgeInsets.zero,
-                decoration: BoxDecoration(color: SolidColors.gray),
-                accountEmail: Text('test'),
-                accountName: Text('test'),
-                currentAccountPicture: CircleAvatar(
-                  child: Center(
-                    child: Icon(Icons.person),
+              BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+                /* UserAccountsDrawerHeader(
+                  margin: EdgeInsets.zero,
+                  decoration: BoxDecoration(color: SolidColors.gray),
+                  accountEmail: Text('test'),
+                  accountName: Text('test'),
+                  currentAccountPicture: CircleAvatar(
+                    child: Center(
+                      child: Icon(Icons.person),
+                    ),
                   ),
-                ),
-              ),
+                ), */
+                if (state is HomeLoadedState) {
+                  print(state.amataUser?.profileUrl);
+                  return UserAccountsDrawerHeader(
+                      margin: EdgeInsets.zero,
+                      decoration: BoxDecoration(color: SolidColors.gray),
+                      accountEmail: Text(state.amataUser!.emailAddrress!),
+                      accountName: state.amataUser!.userName != null
+                          ? Text(state.amataUser!.userName!)
+                          : null,
+                      currentAccountPicture: state.amataUser?.profileUrl != null
+                          ? CachedNetworkImage(
+                              imageUrl: state.amataUser!.profileUrl!,
+                              placeholder: (context, url) => SpinKitDoubleBounce(
+                                color: SolidColors.red,
+
+                              ),
+                              errorWidget: (context, url, error) => CircleAvatar(
+                                backgroundColor: SolidColors.kindGray,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.person_outline_outlined
+                                  ),
+                                ),
+                              ),
+                              imageBuilder: ((context, imageProvider) =>
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                        )),
+                                  )),
+                            )
+                          : Icon(Icons.person));
+                }
+                return Text('');
+              }),
+              // UserAccountsDrawerHeader(
+              //   margin: EdgeInsets.zero,
+              //   decoration: BoxDecoration(color: SolidColors.gray),
+              //   accountEmail: Text('test'),
+              //   accountName: Text('test'),
+              //   currentAccountPicture: CircleAvatar(
+              //     child: Center(
+              //       child: Icon(Icons.person),
+              //     ),
+              //   ),
+              // ),
               Card(
                 color: SolidColors.gray,
                 child: ListTile(
@@ -110,25 +166,125 @@ class HomeScreen extends StatelessWidget {
       'comercial',
       'education'
     ];
-    return Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('Your Lists', style: Theme.of(context).textTheme.headline2),
-            Container(
-              width: width,
-              height: 50,
-              // color: Colors.red,
-              child: _filterBar(fakeCategories),
-            ),
-            _articleListView(width: width, height: height)
-          ],
-        ));
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is HomeLoadedState) {
+          return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: state.articles.length.toDouble(),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Text('Your Lists',
+                        style: Theme.of(context).textTheme.headline1),
+                  ),
+                  Container(
+                    width: width,
+                    height: height * 0.8,
+                    // color: Colors.green,
+                    child: ListView.builder(
+                      itemCount: state.articles.length,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 14),
+                          child: SizedBox(
+                            width: width,
+                            height: 120,
+                            child: Card(
+                              color: SolidColors.kindGray,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      state.articles[index].title!,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) =>
+                                            SpinKitDoubleBounce(
+                                          color: SolidColors.red,
+                                        ),
+                                        imageUrl: state
+                                            .articles[index].coverImageUrl!,
+                                        errorWidget: ((context, url, error) =>
+                                            Icon(
+                                              Icons
+                                                  .image_not_supported_outlined,
+                                              size: 20,
+                                              color: SolidColors.red,
+                                            )),
+                                        imageBuilder: (context, imageProvider) {
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill,
+                                            )),
+                                          );
+                                        },
+                                      ),
+                                      // child: Image.network(
+                                      //     state.articles[index].coverImageUrl!),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ));
+        }
+        if (state is HomeErrorState) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            showDialog(
+              context: context,
+              builder: (context) => CupertinoAlertDialog(
+                content: Text(state.error),
+              ),
+            );
+          });
+        }
+        return Container();
+      },
+    );
   }
+
+  /* Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('Your Lists', style: Theme.of(context).textTheme.headline2),
+              Container(
+                width: width,
+                height: 50,
+                // color: Colors.red,
+                child: _filterBar(fakeCategories),
+              ),
+              _articleListView(width: width, height: height)
+            ],
+          )), */
 
   ListView _filterBar(List<String> fakeCategories) {
     return ListView.builder(
@@ -157,42 +313,18 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _articleListView extends StatelessWidget {
-  const _articleListView({
-    Key? key,
-    required this.width,
-    required this.height,
-  }) : super(key: key);
+// class _articleListView extends StatelessWidget {
+//   const _articleListView({
+//     Key? key,
+//     required this.width,
+//     required this.height,
+//   }) : super(key: key);
 
-  final double width;
-  final double height;
+//   final double width;
+//   final double height;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: width,
-        height: height * 0.7,
-        // color: Colors.green,
-        child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: 20,
-            itemBuilder: ((context, index) {
-              return Card(
-                color: SolidColors.darkGrey,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: ListTile(
-                    title: Text(
-                      'this is test text aricles',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text('ti sis fskjdklasjkldj'),
-                    trailing: Container(
-                        color: Colors.amber,
-                        child: Image.asset(Assets.images.amataLogo.path)),
-                  ),
-                ),
-              );
-            })));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }

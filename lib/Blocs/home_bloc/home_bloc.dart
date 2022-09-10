@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/models/articles/article_modle.dart';
+import 'package:blog_app/data/models/user/user_modle.dart';
 import 'package:blog_app/data/repositories/home_repository.dart';
 import 'package:blog_app/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -29,10 +30,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _loadAllArticle(
       LoadAllArticleEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
+    print('called');
     RawData rawData = await _homeRepository.fetchAllPost();
-    if (rawData.operationResult == OperationResult.success) {
+    RawData rawProfileData = await _userRepository.getProfileInfo();
+    if (rawData.operationResult == OperationResult.success&&rawProfileData.operationResult==OperationResult.success) {
       _allArticles = rawData.data;
-      emit(HomeLoadedState(rawData.data));
+      emit(HomeLoadedState(rawData.data, amataUser: rawProfileData.data));
     }
     if (rawData.operationResult == OperationResult.fail) {
       emit(HomeErrorState(rawData.data));
