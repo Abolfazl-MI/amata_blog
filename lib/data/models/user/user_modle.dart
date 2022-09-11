@@ -7,15 +7,12 @@ part 'user_modle.g.dart';
 class AmataUser {
   String? userName;
   String? emailAddrress;
-  
+  String? uid;
   String? profileUrl;
   List<Article>? savedArticles;
 
   AmataUser(
-      {this.emailAddrress,
-      this.profileUrl,
-      this.savedArticles,
-      this.userName});
+      {this.emailAddrress, this.profileUrl, this.savedArticles, this.userName, this.uid});
 
   factory AmataUser.fromJson(Map<String, dynamic> json) =>
       _$AmataUserFromJson(json);

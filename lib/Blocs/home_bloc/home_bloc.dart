@@ -33,7 +33,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     print('called');
     RawData rawData = await _homeRepository.fetchAllPost();
     RawData rawProfileData = await _userRepository.getProfileInfo();
-    if (rawData.operationResult == OperationResult.success&&rawProfileData.operationResult==OperationResult.success) {
+    if (rawData.operationResult == OperationResult.success &&
+        rawProfileData.operationResult == OperationResult.success) {
       _allArticles = rawData.data;
       emit(HomeLoadedState(rawData.data, amataUser: rawProfileData.data));
     }
@@ -61,6 +62,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     RawData rawData = await _userRepository.saveArticleToReadingList(
         user: event.currentUser, article: event.selectedArticle);
     if (rawData.operationResult == OperationResult.success) {
+      emit(HomeArticleSavedState());
       emit(HomeLoadedState(_allArticles));
     }
     if (rawData.operationResult == OperationResult.fail) {

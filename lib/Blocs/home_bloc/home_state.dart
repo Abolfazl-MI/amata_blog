@@ -19,3 +19,12 @@ class HomeErrorState extends HomeState {
   final String error;
   const HomeErrorState(this.error);
 }
+
+class HomeArticleSavedState extends HomeState{
+
+}
+class HomeArticleDeletedState extends HomeState{
+
+
+
+}

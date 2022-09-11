@@ -17,7 +17,7 @@ class LoadSavedArticlesEvent extends HomeEvent {
 
 class SaveArticleEvent extends HomeEvent {
   final Article selectedArticle;
-  final User currentUser;
+  final AmataUser currentUser;
 
   const SaveArticleEvent(this.selectedArticle, this.currentUser);
 }

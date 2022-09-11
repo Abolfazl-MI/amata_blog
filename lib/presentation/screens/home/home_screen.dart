@@ -2,10 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/auth_repository.dart';
+import 'package:blog_app/data/repositories/user_repository.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,16 +52,15 @@ class HomeScreen extends StatelessWidget {
                       currentAccountPicture: state.amataUser?.profileUrl != null
                           ? CachedNetworkImage(
                               imageUrl: state.amataUser!.profileUrl!,
-                              placeholder: (context, url) => SpinKitDoubleBounce(
+                              placeholder: (context, url) =>
+                                  SpinKitDoubleBounce(
                                 color: SolidColors.red,
-
                               ),
-                              errorWidget: (context, url, error) => CircleAvatar(
+                              errorWidget: (context, url, error) =>
+                                  CircleAvatar(
                                 backgroundColor: SolidColors.kindGray,
                                 child: Center(
-                                  child: Icon(
-                                    Icons.person_outline_outlined
-                                  ),
+                                  child: Icon(Icons.person_outline_outlined),
                                 ),
                               ),
                               imageBuilder: ((context, imageProvider) =>
@@ -166,13 +167,22 @@ class HomeScreen extends StatelessWidget {
       'comercial',
       'education'
     ];
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      listener: ((context, state) {
+        if (state is HomeArticleSavedState) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Article saved to your reading list')));
+          });
+        }
+      }),
       builder: (context, state) {
         if (state is HomeLoadingState) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
+
         if (state is HomeLoadedState) {
           return Padding(
               padding: EdgeInsets.symmetric(
@@ -207,10 +217,40 @@ class HomeScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text(
-                                      state.articles[index].title!,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          state.articles[index].title!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () async {
+                                                  // UserRepository().updateCredentials(user: await FirebaseAuth.instance.currentUser!, userName: 'abolfazl', profileImage: 'https://files.virgool.io/upload/users/10548/posts/hagwlg7mwqq4/nsve5akdotnh.jpeg',)
+                                                  BlocProvider.of<HomeBloc>(
+                                                          context)
+                                                      .add(SaveArticleEvent(
+                                                          state.articles[index],
+                                                          state.amataUser!));
+                                                },
+                                                icon: Icon(
+                                                  Icons.post_add_outlined,
+                                                  color: Colors.white,
+                                                )),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.share_outlined,
+                                                  color: Colors.white,
+                                                ))
+                                          ],
+                                        )
+                                      ],
                                     ),
                                     Container(
                                       width: 100,
@@ -286,31 +326,6 @@ class HomeScreen extends StatelessWidget {
             ],
           )), */
 
-  ListView _filterBar(List<String> fakeCategories) {
-    return ListView.builder(
-      itemCount: fakeCategories.length,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: ((context, index) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-            width: 100,
-            height: 30,
-            child: Card(
-              color: SolidColors.darkGrey,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: Text(
-                  fakeCategories[index],
-                  style: TextStyle(color: SolidColors.red),
-                )),
-              ),
-            ),
-          ))),
-    );
-  }
 }
 
 // class _articleListView extends StatelessWidget {

@@ -48,7 +48,9 @@ class UserRepository {
           emailAddrress: user.email,
           userName: userName,
           profileUrl: profileLink,
+          uid: user.uid,
           savedArticles: []);
+      print(amtaUser.uid);
       await _userRef.doc(user.uid).set(amtaUser.toJson());
 
       return RawData(operationResult: OperationResult.success, data: true);
@@ -58,23 +60,22 @@ class UserRepository {
   }
 
   Future<RawData> saveArticleToReadingList(
-      {required User user, required Article article}) async {
+      {required AmataUser user, required Article article}) async {
     try {
-      log('****************saving article for ${user.email} user****************',
-          name: 'user_repository');
-      var document = await _userRef.doc(user.uid).get();
-      if (document.exists) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        AmataUser amataUser = AmataUser.fromJson(data);
-        amataUser.savedArticles?.add(article);
-        await _userRef.doc(user.uid).update(amataUser.toJson());
-        return RawData(
-            operationResult: OperationResult.success,
-            data: amataUser.savedArticles);
-      } else {
-        return RawData(
-            operationResult: OperationResult.fail, data: 'sth went wrong');
-      }
+      log('saving ${article.title} to user list');
+      var doc = await _userRef.doc(user.uid).get();
+      AmataUser amatauser =
+          AmataUser.fromJson(doc.data() as Map<String, dynamic>);
+      amatauser.savedArticles!.add(article);
+      print(amatauser.savedArticles!.length);
+      var resualt = await _userRef.doc(user.uid).update({
+        'savedArticles':
+            amatauser.savedArticles!.map((e) => e.toJson()).toList()
+      });
+      return RawData(
+        operationResult: OperationResult.success, 
+        
+      );
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
