@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -59,23 +60,42 @@ class UserRepository {
     }
   }
 
-  Future<RawData> saveArticleToReadingList(
-      {required AmataUser user, required Article article}) async {
+  Future<RawData> saveArticleToReadingList({required Article article}) async {
     try {
       log('saving ${article.title} to user list');
-      var doc = await _userRef.doc(user.uid).get();
-      AmataUser amatauser =
-          AmataUser.fromJson(doc.data() as Map<String, dynamic>);
-      amatauser.savedArticles!.add(article);
-      print(amatauser.savedArticles!.length);
-      var resualt = await _userRef.doc(user.uid).update({
-        'savedArticles':
-            amatauser.savedArticles!.map((e) => e.toJson()).toList()
-      });
+      var curentUserRawData =
+          await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      AmataUser user =
+          AmataUser.fromJson(curentUserRawData.data() as Map<String, dynamic>);
+
+      if (user.savedArticles!.isEmpty) {
+        user.savedArticles!.add(article);
+        await _userRef.doc(user.uid).update({
+          'savedArticles': user.savedArticles!.map((e) => e.toJson()).toList()
+        });
+        return RawData(
+            operationResult: OperationResult.success,
+            data: 'article saved succesfullu');
+      }
+      if (user.savedArticles!.isNotEmpty) {
+        bool contains = _contains(user.savedArticles!, article);
+        print(contains);
+        if (contains) {
+          return RawData(
+              operationResult: OperationResult.fail,
+              data: 'article had saved before');
+        } else {
+          user.savedArticles!.add(article);
+          await _userRef.doc(user.uid).update({
+            'savedArticles': user.savedArticles!.map((e) => e.toJson()).toList()
+          });
+          return RawData(
+              operationResult: OperationResult.success,
+              data: 'article saved succesfull');
+        }
+      }
       return RawData(
-        operationResult: OperationResult.success, 
-        
-      );
+          operationResult: OperationResult.fail, data: 'something went wrong');
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
@@ -105,15 +125,7 @@ class UserRepository {
 
   Future<RawData> getProfileInfo() async {
     try {
-      // User? user = _firebaseAuth.currentUser;
-      // if (user != null) {
-      //   return RawData(operationResult: OperationResult.success, data: user);
-      // } else {
-      //   return RawData(
-      //       operationResult: OperationResult.fail, data: 'cant get user');
-      // }
-      var result =
-          await _userRef.doc(await _firebaseAuth.currentUser!.uid).get();
+      var result = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
       if (result.exists) {
         AmataUser amataUser =
             AmataUser.fromJson(result.data() as Map<String, dynamic>);
@@ -128,4 +140,29 @@ class UserRepository {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
+
+  Future<AmataUser> getCurrentUser() async {
+    try {
+      var doc = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      if (doc.exists) {
+        AmataUser user = AmataUser.fromJson(doc.data() as Map<String, dynamic>);
+        return user;
+      } else {
+        throw Exception('user cant find');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+}
+
+bool _contains(List<Article> articles, Article articleMatcher) {
+  for (int i = 0; i < articles.length; i++) {
+    if (articles[i].title == articleMatcher.title) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
 }

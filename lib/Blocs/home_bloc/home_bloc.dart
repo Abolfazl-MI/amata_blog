@@ -60,13 +60,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       SaveArticleEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
     RawData rawData = await _userRepository.saveArticleToReadingList(
-        user: event.currentUser, article: event.selectedArticle);
+        article: event.selectedArticle);
     if (rawData.operationResult == OperationResult.success) {
       emit(HomeArticleSavedState());
       emit(HomeLoadedState(_allArticles));
     }
     if (rawData.operationResult == OperationResult.fail) {
-      emit(HomeErrorState(rawData.data));
+      emit(ArticleSaveErrorState(rawData.data));
+      emit(HomeLoadedState(_allArticles));
+
+      // add(LoadAllArticleEvent());
     }
   }
 

@@ -168,11 +168,17 @@ class HomeScreen extends StatelessWidget {
       'education'
     ];
     return BlocConsumer<HomeBloc, HomeState>(
-      listener: ((context, state) {
+      listener: ((context, state) async {
         if (state is HomeArticleSavedState) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Article saved to your reading list')));
+          });
+        }
+        if (state is ArticleSaveErrorState) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('${state.error}}')));
           });
         }
       }),
@@ -235,8 +241,8 @@ class HomeScreen extends StatelessWidget {
                                                   BlocProvider.of<HomeBloc>(
                                                           context)
                                                       .add(SaveArticleEvent(
-                                                          state.articles[index],
-                                                          state.amataUser!));
+                                                    state.articles[index],
+                                                  ));
                                                 },
                                                 icon: Icon(
                                                   Icons.post_add_outlined,

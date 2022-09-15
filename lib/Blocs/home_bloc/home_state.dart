@@ -12,7 +12,7 @@ class HomeLoadingState extends HomeState {}
 class HomeLoadedState extends HomeState {
   final List<Article> articles;
   final AmataUser? amataUser;
-  const HomeLoadedState(this.articles,{this.amataUser});
+  const HomeLoadedState(this.articles, {this.amataUser});
 }
 
 class HomeErrorState extends HomeState {
@@ -20,11 +20,12 @@ class HomeErrorState extends HomeState {
   const HomeErrorState(this.error);
 }
 
-class HomeArticleSavedState extends HomeState{
+class HomeArticleSavedState extends HomeState {}
 
-}
-class HomeArticleDeletedState extends HomeState{
+class HomeArticleDeletedState extends HomeState {}
 
+class ArticleSaveErrorState extends HomeState {
+  final String error;
 
-
+  ArticleSaveErrorState(this.error);
 }
