@@ -10,6 +10,7 @@ import 'package:blog_app/presentation/screens/global/widgets/feilds.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -138,7 +139,9 @@ class LoginScreen extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        content: CircularProgressIndicator(),
+                        content: SpinKitDoubleBounce(
+                          color: SolidColors.red,
+                        ),
                       ));
             });
           }

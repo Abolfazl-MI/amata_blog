@@ -1,8 +1,10 @@
 import 'package:beamer/beamer.dart';
 import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
 import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
+import 'package:blog_app/Blocs/saved_article/saved_article_cubit.dart';
 import 'package:blog_app/Blocs/splash_cubit/splash_cubit.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
+import 'package:blog_app/presentation/screens/articles/saved_articles_list.dart';
 import 'package:blog_app/presentation/screens/auth/forgetpassword_screen.dart';
 import 'package:blog_app/presentation/screens/splash/splash_screen.dart';
 import 'package:blog_app/presentation/screens/auth/complete_userinfo_screen.dart';
@@ -26,7 +28,10 @@ class AppPages {
         AppRouteNames.completeInfoScreen: (context, state, data) =>
             CompleteUserInformation(),
         AppRouteNames.forgetPassScreen: (context, state, data) =>
-            ForgetPasswordScreen()
+            ForgetPasswordScreen(), 
+        AppRouteNames.savedArticleListScreen:(context,state,data)=>BlocProvider(
+          create: (context)=>SavedArticleCubit()..getUserSavedArticles(),
+          child: SavedArticleScreen())
       },
     ),
   );

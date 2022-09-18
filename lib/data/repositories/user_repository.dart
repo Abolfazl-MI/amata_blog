@@ -154,6 +154,31 @@ class UserRepository {
       throw e;
     }
   }
+
+  Future<RawData> getUserSavedArticle() async {
+    try {
+      log('*******getting user saved articles*******');
+      var curentUserRawData =
+          await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      if (curentUserRawData.exists) {
+        AmataUser amataUser = AmataUser.fromJson(
+            curentUserRawData.data() as Map<String, dynamic>);
+        if (amataUser.savedArticles!.isNotEmpty) {
+          return RawData(
+              operationResult: OperationResult.success,
+              data: amataUser.savedArticles);
+        } else {
+          return RawData(operationResult: OperationResult.success, data: []);
+        }
+      } else {
+        return RawData(
+            operationResult: OperationResult.fail,
+            data: 'cannot find user saved article');
+      }
+    } catch (e) {
+      return RawData(operationResult: OperationResult.fail, data: e.toString());
+    }
+  }
 }
 
 bool _contains(List<Article> articles, Article articleMatcher) {

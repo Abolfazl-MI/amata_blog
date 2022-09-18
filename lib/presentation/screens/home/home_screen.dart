@@ -92,6 +92,9 @@ class HomeScreen extends StatelessWidget {
               Card(
                 color: SolidColors.gray,
                 child: ListTile(
+                  onTap: () {
+                    context.beamToNamed(AppRouteNames.savedArticleListScreen);
+                  },
                   leading: Icon(
                     Icons.save_outlined,
                     color: Colors.white,
@@ -185,7 +188,9 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is HomeLoadingState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitDoubleBounce(
+              color: SolidColors.red,
+            ),
           );
         }
 
