@@ -222,78 +222,87 @@ class HomeScreen extends StatelessWidget {
                           child: SizedBox(
                             width: width,
                             height: 120,
-                            child: Card(
-                              color: SolidColors.kindGray,
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          state.articles[index].title!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () async {
-                                                  // UserRepository().updateCredentials(user: await FirebaseAuth.instance.currentUser!, userName: 'abolfazl', profileImage: 'https://files.virgool.io/upload/users/10548/posts/hagwlg7mwqq4/nsve5akdotnh.jpeg',)
-                                                  BlocProvider.of<HomeBloc>(
-                                                          context)
-                                                      .add(SaveArticleEvent(
-                                                    state.articles[index],
-                                                  ));
-                                                },
-                                                icon: Icon(
-                                                  Icons.post_add_outlined,
-                                                  color: Colors.white,
-                                                )),
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.share_outlined,
-                                                  color: Colors.white,
-                                                ))
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Container(
-                                      width: 100,
-                                      height: 100,
-                                      child: CachedNetworkImage(
-                                        placeholder: (context, url) =>
-                                            SpinKitDoubleBounce(
-                                          color: SolidColors.red,
-                                        ),
-                                        imageUrl: state
-                                            .articles[index].coverImageUrl!,
-                                        errorWidget: ((context, url, error) =>
-                                            Icon(
-                                              Icons
-                                                  .image_not_supported_outlined,
-                                              size: 20,
-                                              color: SolidColors.red,
-                                            )),
-                                        imageBuilder: (context, imageProvider) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.fill,
-                                            )),
-                                          );
-                                        },
+                            child: InkWell(
+                              onTap: () {
+                                context.beamToNamed(
+                                  AppRouteNames.articleDetailScreen,
+                                  data: state.articles[index]
+                                );
+                              },
+                              child: Card(
+                                color: SolidColors.kindGray,
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            state.articles[index].title!,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                          ),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    // UserRepository().updateCredentials(user: await FirebaseAuth.instance.currentUser!, userName: 'abolfazl', profileImage: 'https://files.virgool.io/upload/users/10548/posts/hagwlg7mwqq4/nsve5akdotnh.jpeg',)
+                                                    BlocProvider.of<HomeBloc>(
+                                                            context)
+                                                        .add(SaveArticleEvent(
+                                                      state.articles[index],
+                                                    ));
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.post_add_outlined,
+                                                    color: Colors.white,
+                                                  )),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.share_outlined,
+                                                    color: Colors.white,
+                                                  ))
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                      // child: Image.network(
-                                      //     state.articles[index].coverImageUrl!),
-                                    )
-                                  ]),
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: CachedNetworkImage(
+                                          placeholder: (context, url) =>
+                                              SpinKitDoubleBounce(
+                                            color: SolidColors.red,
+                                          ),
+                                          imageUrl: state
+                                              .articles[index].coverImageUrl!,
+                                          errorWidget: ((context, url, error) =>
+                                              Icon(
+                                                Icons
+                                                    .image_not_supported_outlined,
+                                                size: 20,
+                                                color: SolidColors.red,
+                                              )),
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.fill,
+                                              )),
+                                            );
+                                          },
+                                        ),
+                                        // child: Image.network(
+                                        //     state.articles[index].coverImageUrl!),
+                                      )
+                                    ]),
+                              ),
                             ),
                           ),
                         );

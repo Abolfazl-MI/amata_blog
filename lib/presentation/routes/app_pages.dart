@@ -4,6 +4,7 @@ import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
 import 'package:blog_app/Blocs/saved_article/saved_article_cubit.dart';
 import 'package:blog_app/Blocs/splash_cubit/splash_cubit.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
+import 'package:blog_app/presentation/screens/articles/article_detail_screen.dart';
 import 'package:blog_app/presentation/screens/articles/saved_articles_list.dart';
 import 'package:blog_app/presentation/screens/auth/forgetpassword_screen.dart';
 import 'package:blog_app/presentation/screens/splash/splash_screen.dart';
@@ -19,8 +20,9 @@ class AppPages {
         AppRouteNames.splashScreen: (context, state, data) => BlocProvider(
             create: (context) => SplashCubit()..cheackUserLogin(),
             child: SplashScreen()),
-        AppRouteNames.homeScreen: (context, state, data) =>
-            BlocProvider(create: (context) => HomeBloc()..add(LoadAllArticleEvent()), child: HomeScreen()),
+        AppRouteNames.homeScreen: (context, state, data) => BlocProvider(
+            create: (context) => HomeBloc()..add(LoadAllArticleEvent()),
+            child: HomeScreen()),
         AppRouteNames.loginScree: (context, state, data) =>
             BlocProvider(create: (context) => AuthBloc(), child: LoginScreen()),
         AppRouteNames.signUpScreen: (context, state, data) => BlocProvider(
@@ -28,10 +30,13 @@ class AppPages {
         AppRouteNames.completeInfoScreen: (context, state, data) =>
             CompleteUserInformation(),
         AppRouteNames.forgetPassScreen: (context, state, data) =>
-            ForgetPasswordScreen(), 
-        AppRouteNames.savedArticleListScreen:(context,state,data)=>BlocProvider(
-          create: (context)=>SavedArticleCubit()..getUserSavedArticles(),
-          child: SavedArticleScreen())
+            ForgetPasswordScreen(),
+        AppRouteNames.savedArticleListScreen: (context, state, data) =>
+            BlocProvider(
+                create: (context) =>
+                    SavedArticleCubit()..getUserSavedArticles(),
+                child: const SavedArticleScreen()),
+        AppRouteNames.articleDetailScreen:(context,state,data)=>const ArticleDetailScreen()
       },
     ),
   );
