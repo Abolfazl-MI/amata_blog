@@ -1,16 +1,34 @@
-# blog_app
+# Amata Blog
+## simple blog application with flutter and firebase 
+### screenshots
 
-A new Flutter project.
+<img src="ui_ux/loginUI.png" width="200">
 
-## Getting Started
+## what is Amata Blog?
+### amata blog is a application witch enable its users to read and save article and in future will be able to write article into it.
 
-This project is a starting point for a Flutter application.
+---
+## supported platforms
+<img src="https://img.icons8.com/fluency/96/000000/mac-os.png"/><img src="https://img.icons8.com/color/96/000000/android-os.png"/>
 
-A few resources to get you started if this is your first Flutter project:
+---
+## TechStack
+<p>
+<img src="https://skillicons.dev/icons?i=flutter">
+<img src="https://skillicons.dev/icons?i=firebase">
+</p>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+## Packages Used
+    - flutter_bloc
+    - beamer
+    - firebase packages
+    - flutter_svg
+    - cached_network_image
+## Architecture used:  Bloc pattern
+---
+## How to contribute on this project?
+### 1. create fork of project 
+### 2. clone project and open it by your own ide
+### 3. make changes then push it to your copy repository
+### 4. create pull request to our repository
