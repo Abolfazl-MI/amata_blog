@@ -22,7 +22,7 @@ class HomeErrorState extends HomeState {
 
 class HomeArticleSavedState extends HomeState {}
 
-class HomeArticleDeletedState extends HomeState {}
+// class HomeArticleDeletedState extends HomeState {}
 
 class ArticleSaveErrorState extends HomeState {
   final String error;

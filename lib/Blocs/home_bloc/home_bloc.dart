@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadAllArticleEvent>(_loadAllArticle);
     on<LoadSavedArticlesEvent>(_loadSavedArticles);
     on<SaveArticleEvent>(_saveArticle);
-    on<RemoveSavedArticleEvent>(_removeArticle);
+    // on<RemoveSavedArticleEvent>(_removeArticle);
     on<GetProfileInfoEvent>(_getProfileInfo);
   }
   List<Article> _allArticles = [];
@@ -73,18 +73,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  FutureOr<void> _removeArticle(
-      RemoveSavedArticleEvent event, Emitter<HomeState> emit) async {
-    emit(HomeLoadingState());
-    RawData rawData = await _userRepository.deleteArticleReadingList(
-        user: event.currentUser, article: event.selectedArticle);
-    if (rawData.operationResult == OperationResult.success) {
-      emit(HomeLoadedState(_allArticles));
-    }
-    if (rawData.operationResult == OperationResult.fail) {
-      emit(HomeErrorState(rawData.data));
-    }
-  }
+  // FutureOr<void> _removeArticle(
+  //     RemoveSavedArticleEvent event, Emitter<HomeState> emit) async {
+  //   emit(HomeLoadingState());
+  //   RawData rawData = await _userRepository.deleteArticleReadingList(
+  //       user: event.currentUser, article: event.selectedArticle);
+  //   if (rawData.operationResult == OperationResult.success) {
+  //     emit(HomeLoadedState(_allArticles));
+  //   }
+  //   if (rawData.operationResult == OperationResult.fail) {
+  //     emit(HomeErrorState(rawData.data));
+  //   }
+  // }
 
   FutureOr<void> _getProfileInfo(
       GetProfileInfoEvent event, Emitter<HomeState> emit) async {

@@ -22,11 +22,11 @@ class SaveArticleEvent extends HomeEvent {
   const SaveArticleEvent(this.selectedArticle, );
 }
 
-class RemoveSavedArticleEvent extends HomeEvent {
-  final Article selectedArticle;
-  final User currentUser;
+// class RemoveSavedArticleEvent extends HomeEvent {
+//   final Article selectedArticle;
+//   final User currentUser;
 
-  const RemoveSavedArticleEvent(this.selectedArticle, this.currentUser);
-}
+//   const RemoveSavedArticleEvent(this.selectedArticle, this.currentUser);
+// }
 
 class GetProfileInfoEvent extends HomeEvent {}

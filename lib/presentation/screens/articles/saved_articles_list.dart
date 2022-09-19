@@ -1,4 +1,5 @@
 import 'package:blog_app/Blocs/saved_article/saved_article_cubit.dart';
+import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,23 @@ class SavedArticleScreen extends StatelessWidget {
                     child: Card(
                       color: SolidColors.kindGray,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                AppRouteNames.articleDetailScreen,
+                                arguments: state.savedArticles[index]);
+                          },
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<SavedArticleCubit>(context)
+                                  .removeArticle(state.savedArticles[index]);
+                            },
+                          ),
                           title: Text(
                             state.savedArticles[index].title!,
                             style: TextStyle(color: Colors.white),

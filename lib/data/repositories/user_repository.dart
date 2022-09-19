@@ -101,19 +101,30 @@ class UserRepository {
     }
   }
 
-  Future<RawData> deleteArticleReadingList(
-      {required User user, required Article article}) async {
+  Future<RawData> deleteArticleReadingList({required Article article}) async {
     try {
       log('*******delteing article from reading list******');
-      var documnet = await _userRef.doc(user.uid).get();
+      User? user = await _firebaseAuth.currentUser;
+      var documnet = await _userRef.doc(user!.uid).get();
       if (documnet.exists) {
         Map<String, dynamic> data = documnet.data() as Map<String, dynamic>;
         AmataUser amataUser = AmataUser.fromJson(data);
-        amataUser.savedArticles?.remove(article);
-        await _userRef.doc(user.uid).update(amataUser.toJson());
-        return RawData(
-            operationResult: OperationResult.success,
-            data: amataUser.savedArticles);
+        if (amataUser.savedArticles!.isNotEmpty) {
+          print('before remove object from list lengh is ${amataUser.savedArticles!.length}');
+          await amataUser.savedArticles!.remove(article);
+          print(amataUser.savedArticles!.length);
+          await _userRef.doc(user.uid).update({
+            'savedArticles':
+                amataUser.savedArticles!.map((e) => e.toJson()).toList()
+          });
+          return RawData(
+              operationResult: OperationResult.success,
+              data: 'Article successfully removed');
+        } else {
+          return RawData(
+              operationResult: OperationResult.fail,
+              data: 'there is no article to remove');
+        }
       } else {
         return RawData(
             operationResult: OperationResult.fail, data: 'sth went wrong');

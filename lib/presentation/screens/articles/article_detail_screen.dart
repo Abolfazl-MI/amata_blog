@@ -15,7 +15,7 @@ class ArticleDetailScreen extends StatelessWidget {
     print(article.title);
     return WillPopScope(
         onWillPop: () async {
-          await context.beamBack();
+           Navigator.of(context).pop();
           return true;
         },
         child: Scaffold(
