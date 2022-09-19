@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
 import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
@@ -107,8 +106,8 @@ class LoginScreen extends StatelessWidget {
                 // ),
                 TextButton(
                     onPressed: () {
-                      Beamer.of(context)
-                          .beamToReplacementNamed(AppRouteNames.signUpScreen);
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRouteNames.signUpScreen);
                     },
                     child: RichText(
                         text: TextSpan(text: 'Don\'t have account?', children: [
@@ -118,10 +117,11 @@ class LoginScreen extends StatelessWidget {
                     ]))),
                 TextButton(
                     onPressed: () {
-                     
                       //TODO: navigate to forgot password page
-                      context.beamToReplacementNamed(
-                          AppRouteNames.forgetPassScreen, data: emailController.text);
+
+                      Navigator.of(context).pushReplacementNamed(
+                          AppRouteNames.forgetPassScreen,
+                          arguments: emailController.text);
                     },
                     child: RichText(
                         text: TextSpan(text: 'Forgot password?', children: [
@@ -147,8 +147,9 @@ class LoginScreen extends StatelessWidget {
           }
           if (state is AuthenticatedState) {
             print('authenticated');
-            Beamer.of(context).beamToReplacementNamed(AppRouteNames.homeScreen,
-                data: {'user': state.user});
+          
+            Navigator.of(context).pushReplacementNamed(AppRouteNames.homeScreen,
+                arguments: {'user': state.user});
           }
           if (state is ErrorState) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

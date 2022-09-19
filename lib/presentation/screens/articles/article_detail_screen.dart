@@ -11,7 +11,7 @@ class ArticleDetailScreen extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Article article = context.currentBeamLocation.data as Article;
+    Article article = ModalRoute.of(context)!.settings.arguments as Article;
     print(article.title);
     return WillPopScope(
         onWillPop: () async {

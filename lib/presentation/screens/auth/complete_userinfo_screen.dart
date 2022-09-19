@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:beamer/beamer.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/user_repository.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
@@ -140,8 +139,9 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
               buttonColor: SolidColors.red,
               onTap: () {
                 if (finalImage != null && userNameController.text != null) {
-                  Map<String, User> passedData =
-                      context.currentBeamLocation.data as Map<String, User>;
+                  Map<String, User> passedData = ModalRoute.of(context)!
+                      .settings
+                      .arguments as Map<String, User>;
                   User currentUser = passedData['user']!;
 
                   UserRepository()
@@ -151,7 +151,9 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
                           profileImage: finalImage!)
                       .then((value) {
                     if (value.operationResult == OperationResult.success) {
-                      context.beamToReplacementNamed(AppRouteNames.homeScreen,);
+                      
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRouteNames.homeScreen);
                     }
                     if (value.operationResult == OperationResult.fail) {
                       ScaffoldMessenger.of(context)

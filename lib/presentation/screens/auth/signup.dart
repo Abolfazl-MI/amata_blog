@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
 import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
@@ -30,9 +29,10 @@ class SignUpScreen extends StatelessWidget {
       listener: ((context, state) {
         if (state is AuthenticatedState) {
           print('authenticated');
-          Beamer.of(context).beamToReplacementNamed(
+          
+          Navigator.of(context).pushReplacementNamed(
               AppRouteNames.completeInfoScreen,
-              data: {'user': state.user});
+              arguments: {'user': state.user});
         }
         if (state is ErrorState) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -120,15 +120,14 @@ class SignUpScreen extends StatelessWidget {
               // ),
               TextButton(
                   onPressed: () {
-                    Beamer.of(context)
-                        .beamToReplacementNamed(AppRouteNames.loginScree);
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRouteNames.loginScreen);
                   },
                   child: RichText(
                       text: TextSpan(text: 'Have an account?', children: [
                     TextSpan(
                         text: 'Login', style: TextStyle(color: SolidColors.red))
                   ]))),
-            
             ],
           ),
         ),

@@ -20,9 +20,8 @@ class MyApp extends StatelessWidget {
 // #c
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: AppPages.routerDelagate,
-      routeInformationParser: BeamerParser(),
+    return MaterialApp(
+    
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
 
@@ -45,6 +44,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 20,
                   color: Colors.white))),
       debugShowCheckedModeBanner: false,
+        routes: AppPages.routes,
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

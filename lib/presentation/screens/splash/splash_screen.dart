@@ -12,15 +12,15 @@ class SplashScreen extends StatelessWidget {
         listener: (context, state) async {
           if (state is UnRegisteredState) {
             await Future.delayed(Duration(seconds: 4));
-            Beamer.of(context)
-                .beamToReplacementNamed(AppRouteNames.signUpScreen);
+
+            Navigator.of(context)
+                .pushReplacementNamed(AppRouteNames.signUpScreen);
           }
-          if(state is RegisteredState){
+          if (state is RegisteredState) {
             await Future.delayed(Duration(seconds: 4));
-            Beamer.of(context)
-                .beamToReplacementNamed(AppRouteNames.homeScreen);
+            Navigator.of(context)
+                .pushReplacementNamed(AppRouteNames.homeScreen);
           }
-          
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

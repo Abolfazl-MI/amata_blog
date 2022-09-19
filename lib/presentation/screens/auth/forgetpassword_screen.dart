@@ -6,7 +6,7 @@ import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:blog_app/presentation/screens/global/widgets/button.dart';
 import 'package:blog_app/presentation/screens/global/widgets/feilds.dart';
-import 'package:beamer/beamer.dart';
+
 import 'package:flutter/material.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
@@ -62,8 +62,9 @@ class ForgetPasswordScreen extends StatelessWidget {
                                   onPressed: () {
                                     AuthRepository().forGetPassword(
                                         email: emailController.text);
-                                    context.beamToReplacementNamed(
-                                        AppRouteNames.loginScree);
+                                    
+                                    Navigator.of(context).pushReplacementNamed(
+                                        AppRouteNames.loginScreen);
                                   },
                                   child: Text(
                                     'Ok',

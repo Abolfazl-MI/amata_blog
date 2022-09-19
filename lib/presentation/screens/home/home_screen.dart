@@ -1,4 +1,4 @@
-import 'package:beamer/beamer.dart';
+
 import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/auth_repository.dart';
@@ -93,7 +93,8 @@ class HomeScreen extends StatelessWidget {
                 color: SolidColors.gray,
                 child: ListTile(
                   onTap: () {
-                    context.beamToNamed(AppRouteNames.savedArticleListScreen);
+                    Navigator.of(context)
+                        .pushNamed(AppRouteNames.savedArticleListScreen);
                   },
                   leading: Icon(
                     Icons.save_outlined,
@@ -135,8 +136,8 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   AuthRepository().logOut().then((value) {
                     if (value.operationResult == OperationResult.success) {
-                      context
-                          .beamToReplacementNamed(AppRouteNames.signUpScreen);
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRouteNames.signUpScreen);
                     }
                   });
                 },
@@ -224,10 +225,10 @@ class HomeScreen extends StatelessWidget {
                             height: 120,
                             child: InkWell(
                               onTap: () {
-                                context.beamToNamed(
-                                  AppRouteNames.articleDetailScreen,
-                                  data: state.articles[index]
-                                );
+                                
+
+                                Navigator.of(context).pushNamed(
+                                    AppRouteNames.articleDetailScreen,arguments: state.articles[index]);
                               },
                               child: Card(
                                 color: SolidColors.kindGray,
