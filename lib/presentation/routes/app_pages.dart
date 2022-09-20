@@ -9,6 +9,7 @@ import 'package:blog_app/presentation/screens/articles/saved_articles_list.dart'
 import 'package:blog_app/presentation/screens/auth/forgetpassword_screen.dart';
 import 'package:blog_app/presentation/screens/splash/splash_screen.dart';
 import 'package:blog_app/presentation/screens/auth/complete_userinfo_screen.dart';
+import 'package:blog_app/presentation/screens/user_profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +33,7 @@ class AppPages {
     AppRouteNames.savedArticleListScreen: (context) => BlocProvider(
         create: (context) => SavedArticleCubit()..getUserSavedArticles(),
         child: const SavedArticleScreen()),
-    AppRouteNames.articleDetailScreen: (context) => const ArticleDetailScreen()
+    AppRouteNames.articleDetailScreen: (context) => const ArticleDetailScreen(), 
+    AppRouteNames.profileScreen:(context)=> const ProfileScreen()
   };
 }

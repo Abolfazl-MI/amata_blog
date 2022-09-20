@@ -1,4 +1,3 @@
-
 import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/auth_repository.dart';
@@ -42,39 +41,46 @@ class HomeScreen extends StatelessWidget {
                 ), */
                 if (state is HomeLoadedState) {
                   print(state.amataUser?.profileUrl);
-                  return UserAccountsDrawerHeader(
-                      margin: EdgeInsets.zero,
-                      decoration: BoxDecoration(color: SolidColors.gray),
-                      accountEmail: Text(state.amataUser!.emailAddrress!),
-                      accountName: state.amataUser!.userName != null
-                          ? Text(state.amataUser!.userName!)
-                          : null,
-                      currentAccountPicture: state.amataUser?.profileUrl != null
-                          ? CachedNetworkImage(
-                              imageUrl: state.amataUser!.profileUrl!,
-                              placeholder: (context, url) =>
-                                  SpinKitDoubleBounce(
-                                color: SolidColors.red,
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  CircleAvatar(
-                                backgroundColor: SolidColors.kindGray,
-                                child: Center(
-                                  child: Icon(Icons.person_outline_outlined),
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(AppRouteNames.profileScreen);
+                    },
+                    child: UserAccountsDrawerHeader(
+                        margin: EdgeInsets.zero,
+                        decoration: BoxDecoration(color: SolidColors.gray),
+                        accountEmail: Text(state.amataUser!.emailAddrress!),
+                        accountName: state.amataUser!.userName != null
+                            ? Text(state.amataUser!.userName!)
+                            : null,
+                        currentAccountPicture: state.amataUser?.profileUrl !=
+                                null
+                            ? CachedNetworkImage(
+                                imageUrl: state.amataUser!.profileUrl!,
+                                placeholder: (context, url) =>
+                                    SpinKitDoubleBounce(
+                                  color: SolidColors.red,
                                 ),
-                              ),
-                              imageBuilder: ((context, imageProvider) =>
-                                  Container(
-                                    width: 80,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                        )),
-                                  )),
-                            )
-                          : Icon(Icons.person));
+                                errorWidget: (context, url, error) =>
+                                    CircleAvatar(
+                                  backgroundColor: SolidColors.kindGray,
+                                  child: Center(
+                                    child: Icon(Icons.person_outline_outlined),
+                                  ),
+                                ),
+                                imageBuilder: ((context, imageProvider) =>
+                                    Container(
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                          )),
+                                    )),
+                              )
+                            : Icon(Icons.person)),
+                  );
                 }
                 return Text('');
               }),
@@ -225,10 +231,9 @@ class HomeScreen extends StatelessWidget {
                             height: 120,
                             child: InkWell(
                               onTap: () {
-                                
-
                                 Navigator.of(context).pushNamed(
-                                    AppRouteNames.articleDetailScreen,arguments: state.articles[index]);
+                                    AppRouteNames.articleDetailScreen,
+                                    arguments: state.articles[index]);
                               },
                               child: Card(
                                 color: SolidColors.kindGray,

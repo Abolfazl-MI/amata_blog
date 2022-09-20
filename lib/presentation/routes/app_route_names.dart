@@ -7,4 +7,5 @@ abstract class AppRouteNames {
   static const String forgetPassScreen = '/forget_password';
   static const String savedArticleListScreen = '/savedArticleList';
   static const String articleDetailScreen = '/articleDetailScreen';
+  static const String profileScreen = '/profileScreen';
 }
