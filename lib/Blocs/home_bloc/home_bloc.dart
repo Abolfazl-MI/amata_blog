@@ -14,10 +14,10 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeRepository _homeRepository;
-  final UserRepository _userRepository;
-  HomeBloc({HomeRepository? homeRepository, UserRepository? userRepository})
+  final UserRepositories _userRepository;
+  HomeBloc({HomeRepository? homeRepository, UserRepositories? userRepository})
       : _homeRepository = homeRepository ?? HomeRepository(),
-        _userRepository = userRepository ?? UserRepository(),
+        _userRepository = userRepository ?? UserRepositories(),
         super(HomeLoadingState()) {
     on<LoadAllArticleEvent>(_loadAllArticle);
     on<LoadSavedArticlesEvent>(_loadSavedArticles);

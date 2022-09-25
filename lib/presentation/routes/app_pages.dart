@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:blog_app/Blocs/auth_bloc/auth_bloc.dart';
 import 'package:blog_app/Blocs/home_bloc/home_bloc.dart';
+import 'package:blog_app/Blocs/profile_cubit/profile_cubit.dart';
 import 'package:blog_app/Blocs/saved_article/saved_article_cubit.dart';
 import 'package:blog_app/Blocs/splash_cubit/splash_cubit.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
@@ -34,6 +35,9 @@ class AppPages {
         create: (context) => SavedArticleCubit()..getUserSavedArticles(),
         child: const SavedArticleScreen()),
     AppRouteNames.articleDetailScreen: (context) => const ArticleDetailScreen(), 
-    AppRouteNames.profileScreen:(context)=> const ProfileScreen()
+    AppRouteNames.profileScreen:(context)=> BlocProvider(
+      create: (context)=>ProfileCubit()..getUserInformation(),
+      child: const ProfileScreen(),
+    )
   };
 }

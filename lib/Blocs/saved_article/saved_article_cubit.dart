@@ -8,13 +8,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 part 'saved_article_state.dart';
 
 class SavedArticleCubit extends Cubit<SavedArticleState> {
-  final UserRepository _userRepository;
-  SavedArticleCubit({UserRepository? userRepository})
-      : _userRepository = userRepository ?? UserRepository(),
+  final UserRepositories _userRepository;
+  SavedArticleCubit({UserRepositories? userRepository})
+      : _userRepository = userRepository ?? UserRepositories(),
         super(SavedArticleLoadingState());
 
   Future getUserSavedArticles() async {
-    RawData rawData = await UserRepository().getUserSavedArticle();
+    RawData rawData = await UserRepositories().getUserSavedArticle();
     if (rawData.operationResult == OperationResult.success) {
       emit(SavedArticleLoadedState(rawData.data));
     }

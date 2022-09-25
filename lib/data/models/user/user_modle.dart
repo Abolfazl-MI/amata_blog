@@ -9,24 +9,20 @@ class AmataUser {
   String? emailAddrress;
   String? uid;
   String? profileUrl;
+  String? bio;
   List<Article>? savedArticles;
 
   AmataUser(
-      {this.emailAddrress, this.profileUrl, this.savedArticles, this.userName, this.uid});
+      {this.emailAddrress,
+      this.profileUrl,
+      this.savedArticles,
+      this.userName,
+      this.uid,
+      this.bio});
 
   factory AmataUser.fromJson(Map<String, dynamic> json) =>
       _$AmataUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$AmataUserToJson(this);
 
-  AmataUser copyWith(
-          {String? emailAddres,
-          String? password,
-          String? profileUrlm,
-          List<Article>? savedArticles}) =>
-      AmataUser(
-          profileUrl: profileUrl ?? this.profileUrl,
-          emailAddrress: emailAddrress ?? this.emailAddrress,
-          // password: password ?? this.password,
-          savedArticles: savedArticles ?? this.savedArticles);
 }

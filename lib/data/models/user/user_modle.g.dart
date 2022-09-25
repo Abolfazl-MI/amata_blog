@@ -14,6 +14,7 @@ AmataUser _$AmataUserFromJson(Map<String, dynamic> json) => AmataUser(
           .toList(),
       userName: json['userName'] as String?,
       uid: json['uid'] as String?,
+      bio: json['bio'] as String?,
     );
 
 Map<String, dynamic> _$AmataUserToJson(AmataUser instance) => <String, dynamic>{
@@ -21,5 +22,6 @@ Map<String, dynamic> _$AmataUserToJson(AmataUser instance) => <String, dynamic>{
       'emailAddrress': instance.emailAddrress,
       'uid': instance.uid,
       'profileUrl': instance.profileUrl,
+      'bio': instance.bio,
       'savedArticles': instance.savedArticles,
     };

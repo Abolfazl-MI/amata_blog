@@ -144,14 +144,13 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
                       .arguments as Map<String, User>;
                   User currentUser = passedData['user']!;
 
-                  UserRepository()
+                  UserRepositories()
                       .updateCredentials(
                           user: currentUser,
                           userName: userNameController.text,
                           profileImage: finalImage!)
                       .then((value) {
                     if (value.operationResult == OperationResult.success) {
-                      
                       Navigator.of(context)
                           .pushReplacementNamed(AppRouteNames.homeScreen);
                     }

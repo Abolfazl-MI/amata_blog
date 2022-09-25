@@ -7,4 +7,14 @@ abstract class ProfileState extends Equatable {
   List<Object> get props => [];
 }
 
-class ProfileInitial extends ProfileState {}
+class ProfileLoadingState extends ProfileState {}
+
+class ProfileLoadedState extends ProfileState {
+  final AmataUser amataUser;
+  ProfileLoadedState(this.amataUser);
+}
+
+class ProfileErrorState extends ProfileState {
+  final String error;
+  ProfileErrorState(this.error);
+}
