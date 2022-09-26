@@ -226,31 +226,18 @@ class UserRepositories {
 
   Future<RawData> updateOrAddBioForUser({required String bioText}) async {
     try {
-      // gets user snapShot raw data from fireStore
-      DocumentSnapshot userRawData =
-          await _userRef.doc((_firebaseAuth.currentUser!.uid)).get()
-            ..data();
-      // creates Amata User
-      AmataUser amataUser =
-          AmataUser.fromJson(userRawData as Map<String, dynamic>);
-      // check if exist bio for user then update
-      if (amataUser.bio != null) {
-        amataUser.bio = bioText;
-        // updates user felid in firebase
-        var result = await _userRef
-            .doc(_firebaseAuth.currentUser!.uid)
-            .update({'bio': bioText});
-        // returns true if its update
-        return RawData(operationResult: OperationResult.success, data: true);
-      }
-      if (amataUser.bio == null) {
-        var result = await _userRef
-            .doc(await _firebaseAuth.currentUser!.uid)
-            .set({'bio': bioText}, SetOptions(merge: true));
-        return RawData(operationResult: OperationResult.success, data: true);
-      }
+      // updates value in firestore
+      await _userRef
+          .doc(_firebaseAuth.currentUser!.uid)
+          .update({'bio': bioText});
+      // gets last changes
+      var res = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      // user raw Data  
+      Map<String, dynamic> userRawData = res.data() as Map<String, dynamic>;
+      // last user changes 
+      AmataUser user = AmataUser.fromJson(userRawData);
       return RawData(
-          operationResult: OperationResult.fail, data: 'sth went wrong');
+          operationResult: OperationResult.success, data: user);
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
@@ -264,10 +251,10 @@ class UserRepositories {
           .doc(_firebaseAuth.currentUser!.uid)
           .update({'userName': userName});
       // gets last changes from fireStore
-      var rawData = await _userRef.doc(_firebaseAuth.currentUser!.uid).get()
-        ..data();
+      var rawData = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      Map<String, dynamic> rawUser = rawData.data() as Map<String, dynamic>;
       // converts rawData to userProfile
-      AmataUser amataUser = AmataUser.fromJson(rawData as Map<String, dynamic>);
+      AmataUser amataUser = AmataUser.fromJson(rawUser);
       return RawData(operationResult: OperationResult.success, data: amataUser);
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
@@ -299,10 +286,9 @@ class UserRepositories {
       var resualt = await _userRef.doc(_firebaseAuth.currentUser!.uid).get()
         ..data();
       // Last user  changes
-      AmataUser user = AmataUser.fromJson(resualt as Map<String,dynamic>);
+      AmataUser user = AmataUser.fromJson(resualt as Map<String, dynamic>);
 
-      return RawData(
-          operationResult: OperationResult.success, data: resualt);
+      return RawData(operationResult: OperationResult.success, data: resualt);
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }

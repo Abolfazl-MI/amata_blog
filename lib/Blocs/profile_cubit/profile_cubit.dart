@@ -14,7 +14,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({UserRepositories? userRepository})
       : _userRepository = userRepository ?? UserRepositories(),
         super(ProfileLoadingState());
-//  gets last changes from server 
+//  gets last changes from server
   Future<void> getUserInformation() async {
     RawData rawData = await _userRepository.getProfileInfo();
     switch (rawData.operationResult) {
@@ -32,6 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
 // updates user Email
   Future<void> updateUserEmailAddress({required String emailAddress}) async {
+    emit(ProfileLoadingState());
     RawData rawData = await _userRepository.updateUserEmailAddress(
         newEmailAddres: emailAddress);
 
@@ -52,6 +53,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
 // updates user Name
   Future<void> updateUserName({required String newUserName}) async {
+    emit(ProfileLoadingState());
+
     RawData rawData =
         await _userRepository.updateUserName(userName: newUserName);
     switch (rawData.operationResult) {
@@ -69,6 +72,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
 //  updates user bio
   Future<void> updateAddBio({required String bio}) async {
+    emit(ProfileLoadingState());
+
     RawData rawData = await _userRepository.updateOrAddBioForUser(bioText: bio);
     switch (rawData.operationResult) {
       case OperationResult.success:
@@ -85,6 +90,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
 // updates user profile
   Future<void> updateProfilePhoto({required File profileImage}) async {
+    emit(ProfileLoadingState());
     RawData rawData =
         await _userRepository.updateUserProfile(profileImage: profileImage);
     switch (rawData.operationResult) {

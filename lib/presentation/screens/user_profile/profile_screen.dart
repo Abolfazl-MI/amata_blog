@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:blog_app/Blocs/profile_cubit/profile_cubit.dart';
 import 'package:blog_app/data/models/user/user_modle.dart';
+import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
 import 'package:blog_app/presentation/screens/global/widgets/button.dart';
 import 'package:blog_app/presentation/screens/global/widgets/feilds.dart';
@@ -22,7 +23,8 @@ class ProfileScreen extends StatelessWidget {
         width: width,
         height: height,
         // color: Colors.green,
-        child: BlocConsumer<ProfileCubit,ProfileState>(listener: ((context, state) {
+        child: BlocConsumer<ProfileCubit, ProfileState>(
+            listener: ((context, state) {
           if (state is ProfileErrorState) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               showDialog(
@@ -96,6 +98,13 @@ class ProfileScreen extends StatelessWidget {
               ],
             );
           }
+          if (state is ProfileLoadingState) {
+            return Center(
+              child: SpinKitDoubleBounce(
+                color: SolidColors.red,
+              ),
+            );
+          }
           if (state is ProfileErrorState) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               showDialog(
@@ -114,6 +123,7 @@ class ProfileScreen extends StatelessWidget {
 
   _userInfosection(double height, double width, BuildContext context,
       {required AmataUser amataUser}) {
+    TextEditingController controller = TextEditingController();
     return Positioned(
       top: height / 3.1,
       child: Container(
@@ -135,13 +145,8 @@ class ProfileScreen extends StatelessWidget {
               // email section
               _bordIteam(width,
                   usageStr: amataUser.emailAddrress!,
-                  ontap: () => showEditDialog(
-                      context: context,
-                      title: 'Edit your Email Adress',
-                      hintText: 'Email Adress',
-                      onConfrim: () {},
-                      textEditingController: TextEditingController()),
-                  usageTip: 'Tap to change emial address'),
+                  ontap: () {},
+                  usageTip: 'You can\'t change your email address unless now'),
               Divider(
                 color: SolidColors.lightGrey,
               ),
@@ -151,9 +156,15 @@ class ProfileScreen extends StatelessWidget {
                   ontap: () => showEditDialog(
                       context: context,
                       title: 'Edit your User Name',
-                      hintText: 'UserName',
-                      onConfrim: () {},
-                      textEditingController: TextEditingController()),
+                      controller: controller,
+                      hintText: 'Update your userName',
+                      onTap: () {
+                        Navigator.of(context).pop();
+
+                        context
+                            .read<ProfileCubit>()
+                            .updateUserName(newUserName: controller.text);
+                      }),
                   usageTip: 'Tap to change user name'),
               Divider(
                 color: SolidColors.lightGrey,
@@ -163,10 +174,15 @@ class ProfileScreen extends StatelessWidget {
                   usageStr: amataUser.bio ?? 'sapmple bio you can have',
                   ontap: () => showEditDialog(
                       context: context,
-                      title: 'Edit your Bio',
-                      hintText: 'bio',
-                      onConfrim: () {},
-                      textEditingController: TextEditingController()),
+                      title: 'Edit or add your bio',
+                      controller: controller,
+                      hintText: 'Update your bio',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context
+                            .read<ProfileCubit>()
+                            .updateAddBio(bio: controller.text);
+                      }),
                   usageTip: 'Tap to change bio'),
               Divider(
                 color: SolidColors.lightGrey,
@@ -178,50 +194,51 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  showEditDialog({
-    required BuildContext context,
-    required String title,
-    required String hintText,
-    required Function() onConfrim,
-    required TextEditingController textEditingController,
-  }) async {
-    return await showDialog(
-        barrierDismissible: false,
+  showEditDialog(
+      {required String title,
+      required Function() onTap,
+      required String hintText,
+      required BuildContext context,
+      required TextEditingController controller}) {
+    return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => Dialog(
               backgroundColor: SolidColors.kindGray,
-              title: Text(
-                title,
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              content: AppTextFormFeilds(
-                hintText: hintText,
-                feildIcon: Icons.edit,
-                isPasswordFeild: false,
-                controller: textEditingController,
-                fillColor: SolidColors.gray,
-                isFilled: true,
-              ),
-              actionsAlignment: MainAxisAlignment.spaceEvenly,
-              actions: [
-                ElevatedButton(
-                  onPressed: onConfrim,
-                  child: Text('Confirm'),
-                  style: ElevatedButton.styleFrom(
-                    primary: SolidColors.red,
-                  ),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                width: MediaQuery.of(context).size.width,
+                height: 250,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    TextFormField(
+                      controller: controller,
+                      style: TextStyle(color: SolidColors.red),
+                      decoration: InputDecoration(
+                          hintText: hintText,
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          disabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white))),
+                    ),
+                    AppButton(
+                        hintText: 'confirm',
+                        buttonColor: SolidColors.red,
+                        onTap: onTap,
+                        width: MediaQuery.of(context).size.width)
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel'),
-                  style: ElevatedButton.styleFrom(
-                    primary: SolidColors.red,
-                  ),
-                ),
-              ],
+              ),
             ));
   }
 
