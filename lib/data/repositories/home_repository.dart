@@ -7,9 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeRepository {
   final CollectionReference _articleRef = FirebaseFirestore.instance
-      .collection(DatabaseConstants.articlesCollection);
+      .collection(FirebaseConstants.articlesCollection);
   final CollectionReference _userRef =
-      FirebaseFirestore.instance.collection(DatabaseConstants.usersCollection);
+      FirebaseFirestore.instance.collection(FirebaseConstants.usersCollection);
 // fetch the all articles exists
   Future<RawData> fetchAllPost() async {
     try {

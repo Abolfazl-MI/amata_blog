@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:blog_app/Blocs/profile_cubit/profile_cubit.dart';
 import 'package:blog_app/data/models/user/user_modle.dart';
@@ -10,6 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -92,7 +94,17 @@ class ProfileScreen extends StatelessWidget {
                     top: height / 3.4,
                     child: FloatingActionButton(
                       backgroundColor: Colors.lightBlue,
-                      onPressed: () {},
+                      onPressed: () async {
+                        ImagePicker picker = ImagePicker();
+                        XFile? result = await picker
+                            .pickImage(source: ImageSource.gallery)
+                            .then((value) {
+                          if (value != null) {
+                            context.read<ProfileCubit>().updateProfilePhoto(
+                                profileImage: File(value.path));
+                          }
+                        });
+                      },
                       child: Icon(Icons.camera_alt_outlined),
                     )),
               ],

@@ -17,7 +17,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 // 1E1F28
-// #c
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

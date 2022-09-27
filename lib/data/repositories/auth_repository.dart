@@ -37,10 +37,8 @@ class AuthRepository {
   }
 
   // log in user with email and password
-  Future<RawData> loginWithEmail({
-    required String email,
-    required String password,
-  }) async {
+  Future<RawData> loginWithEmail(
+      {required String email, required String password}) async {
     try {
       log('**********Login user with {email:$email, password:$password }**********',
           name: 'Auth_Repository');
@@ -95,5 +93,4 @@ class AuthRepository {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
-
 }

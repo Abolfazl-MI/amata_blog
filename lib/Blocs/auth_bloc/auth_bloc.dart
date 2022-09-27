@@ -6,9 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:blog_app/core/core.dart';
-import 'package:blog_app/data/models/user/user_modle.dart';
+
 import 'package:blog_app/data/repositories/auth_repository.dart';
-import 'package:blog_app/data/repositories/pref_repository.dart';
+
 
 part 'auth_event.dart';
 part 'auth_state.dart';

@@ -8,6 +8,7 @@ import 'package:blog_app/data/models/user/user_modle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserRepositories {
@@ -23,7 +24,7 @@ class UserRepositories {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _userRef = userRef ??
             FirebaseFirestore.instance
-                .collection(DatabaseConstants.usersCollection),
+                .collection(FirebaseConstants.usersCollection),
         _userStorageRef = userStorageRef ?? FirebaseStorage.instance;
 
   Future<RawData> updateCredentials({
@@ -35,8 +36,8 @@ class UserRepositories {
       String fileName = profileImage.path.split('/').last;
       Reference profileBucket = _userStorageRef
           .ref()
-          .child('profiles')
-          .child(userName)
+          .child(FirebaseConstants.userProfile)
+          .child(_firebaseAuth.currentUser!.uid)
           .child(fileName);
       TaskSnapshot uploadTask = await profileBucket.putFile(profileImage);
       //  TaskSnapshot taskSnapshot= await _userStorageRef.ref().child(path).putFile(profileImage);
@@ -222,6 +223,7 @@ class UserRepositories {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
   }
+
   // add  or update bio section for user
 
   Future<RawData> updateOrAddBioForUser({required String bioText}) async {
@@ -232,12 +234,11 @@ class UserRepositories {
           .update({'bio': bioText});
       // gets last changes
       var res = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
-      // user raw Data  
+      // user raw Data
       Map<String, dynamic> userRawData = res.data() as Map<String, dynamic>;
-      // last user changes 
+      // last user changes
       AmataUser user = AmataUser.fromJson(userRawData);
-      return RawData(
-          operationResult: OperationResult.success, data: user);
+      return RawData(operationResult: OperationResult.success, data: user);
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
@@ -264,31 +265,32 @@ class UserRepositories {
   // update profile picture
   Future<RawData> updateUserProfile({required File profileImage}) async {
     try {
-      // gets userName from fireStore
-      String userName = await _userRef
-          .doc(_firebaseAuth.currentUser!.uid)
-          .get()
-          .then((value) => value['userName']);
-
-      // gets file name from path picked file
+      // deletes last image
+        Reference reference=_userStorageRef.ref().child(FirebaseConstants.userProfile).child(_firebaseAuth.currentUser!.uid);
+        // var pervImage=reference.listAll().then((value) => value.items.first);
+        reference.delete();
+      /// gets file name from path picked file
       String fileName = profileImage.path.split('/').last;
       // firebase storage path
       Reference profileBucket = _userStorageRef
           .ref()
-          .child('profiles')
-          .child(userName)
+          .child(FirebaseConstants.userProfile)
+          .child(_firebaseAuth.currentUser!.uid)
           .child(fileName);
-      // deletes last image
-      await profileBucket.delete();
-      // uploads image to storage
+      // // uploads image to storage
       TaskSnapshot uploadTask = await profileBucket.putFile(profileImage);
-      // gets last user changes from server
-      var resualt = await _userRef.doc(_firebaseAuth.currentUser!.uid).get()
-        ..data();
-      // Last user  changes
-      AmataUser user = AmataUser.fromJson(resualt as Map<String, dynamic>);
-
-      return RawData(operationResult: OperationResult.success, data: resualt);
+      //geting download link of uploaded image
+        String downloadLink=await profileBucket.getDownloadURL();
+      //  updating user profileLink with last changes
+        await _userRef.doc(_firebaseAuth.currentUser!.uid).update(
+            {'profileUrl': downloadLink});
+      // // gets last user changes from server
+      var resualt = await _userRef.doc(_firebaseAuth.currentUser!.uid).get();
+      // user raw data json type
+      Map<String, dynamic> rawUser = resualt.data() as Map<String, dynamic>;
+      // create instance of user to upda
+      AmataUser user = AmataUser.fromJson(rawUser);
+      return RawData(operationResult: OperationResult.success, data: user);
     } catch (e) {
       return RawData(operationResult: OperationResult.fail, data: e.toString());
     }
