@@ -27,11 +27,19 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/amataLogo.png');
 }
 
+class $AssetsLottiesGen {
+  const $AssetsLottiesGen();
+
+  /// File path: assets/lotties/amta_loading.json
+  String get amtaLoading => 'assets/lotties/amta_loading.json';
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsLottiesGen lotties = $AssetsLottiesGen();
 }
 
 class AssetGenImage {

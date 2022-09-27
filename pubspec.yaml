@@ -55,6 +55,7 @@ dependencies:
   image_picker: ^0.8.5+3
   cached_network_image: ^3.2.1
   flutter_spinkit: ^5.1.0
+  lottie: ^1.4.2
   # for storing user information
   # sharedpreference: ^0.0.1
   # firebase_auth_mocks: ^0.8.5+1 
@@ -88,6 +89,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/lotties/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

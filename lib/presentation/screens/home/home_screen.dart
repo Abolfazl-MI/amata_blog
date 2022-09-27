@@ -112,28 +112,31 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              // Card(
+              //   color: SolidColors.gray,
+              //   child: ListTile(
+              //     leading: Icon(
+              //       Icons.settings_outlined,
+              //       color: Colors.white,
+              //     ),
+              //     title: Text(
+              //       'Settings',
+              //       style: TextStyle(color: Colors.white),
+              //     ),
+              //   ),
+              // ),
               Card(
                 color: SolidColors.gray,
                 child: ListTile(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(AppRouteNames.profileScreen);
+                  },
                   leading: Icon(
-                    Icons.settings_outlined,
+                    Icons.person,
                     color: Colors.white,
                   ),
                   title: Text(
-                    'Settings',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              Card(
-                color: SolidColors.gray,
-                child: ListTile(
-                  leading: Icon(
-                    Icons.article_outlined,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'My Articles',
+                    'Profile',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

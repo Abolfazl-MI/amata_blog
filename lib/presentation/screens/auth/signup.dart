@@ -8,6 +8,7 @@ import 'package:blog_app/presentation/screens/global/widgets/feilds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -34,11 +35,30 @@ class SignUpScreen extends StatelessWidget {
               AppRouteNames.completeInfoScreen,
               arguments: {'user': state.user});
         }
+
+        if(state is LoadingState){
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            showDialog(context: context, builder: (context)=>Dialog(
+              child: Container(
+                height: MediaQuery.of(context).size.height/4,
+                width: MediaQuery.of(context).size.width,
+                color: SolidColors.darkGrey,
+                padding: EdgeInsets.all(10),
+                
+                child: Center(
+                  child: Lottie.asset(Assets.lotties.amtaLoading ),
+                ),
+              ),
+            ));
+          });
+        }
+
         if (state is ErrorState) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.err)));
           });
+
         }
       }),
       child: SingleChildScrollView(

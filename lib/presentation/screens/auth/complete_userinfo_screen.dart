@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:blog_app/core/core.dart';
 import 'package:blog_app/data/repositories/user_repository.dart';
+import 'package:blog_app/gen/assets.gen.dart';
 import 'package:blog_app/gen/fonts.gen.dart';
 import 'package:blog_app/presentation/routes/app_route_names.dart';
 import 'package:blog_app/presentation/screens/global/colors/solid_colors.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 
 class CompleteUserInformation extends StatefulWidget {
   @override
@@ -20,8 +22,10 @@ class CompleteUserInformation extends StatefulWidget {
 
 class _CompleteUserInformationState extends State<CompleteUserInformation> {
   TextEditingController userNameController = TextEditingController();
+  bool isLoading = false;
   File? finalImage;
   ImagePicker _picker = ImagePicker();
+
   pickImage(ImageSource imagesource) async {
     XFile? pickedImage = await _picker.pickImage(source: imagesource);
 
@@ -35,8 +39,26 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     // TODO: implement build
     // throw UnimplementedError();'
+    if (isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        showDialog(
+            context: context,
+            builder: (context) => Dialog(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 4,
+                    color: SolidColors.darkGrey,
+                    padding: EdgeInsets.all(10),
+                    child: Center(
+                      child: Lottie.asset(Assets.lotties.amtaLoading),
+                    ),
+                  ),
+                ));
+      });
+    }
     return Scaffold(
       body: Center(
         child: Column(
@@ -139,6 +161,9 @@ class _CompleteUserInformationState extends State<CompleteUserInformation> {
               buttonColor: SolidColors.red,
               onTap: () {
                 if (finalImage != null && userNameController.text != null) {
+                  setState(() {
+                    isLoading = true;
+                  });
                   Map<String, User> passedData = ModalRoute.of(context)!
                       .settings
                       .arguments as Map<String, User>;

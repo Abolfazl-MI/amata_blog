@@ -23,6 +23,7 @@ AuthBloc() : super(const UnknownState(AuthStatus.unknown)) {
 
   Future<void> _loginWithEmail(
       LoginWithEmailEvent event, Emitter<AuthState> emit) async {
+    emit(LoadingState());
     RawData result = await _authRepository.loginWithEmail(
         email: event.emailAddress, password: event.password);
     if (result.operationResult == OperationResult.success) {
@@ -36,6 +37,8 @@ AuthBloc() : super(const UnknownState(AuthStatus.unknown)) {
 
   Future<void> _signUpWithEmail(
       SignUpWithEmailEvent event, Emitter<AuthState> emit) async {
+    emit(LoadingState());
+
     RawData result = await _authRepository.signupWithEmail(
         email: event.emailAddress, password: event.password);
     if (result.operationResult == OperationResult.success) {
@@ -49,6 +52,8 @@ AuthBloc() : super(const UnknownState(AuthStatus.unknown)) {
   Future<void> _forgetPassword(
       ForgetPasswordEvent event, Emitter<AuthState> emit) async {
     try {
+      emit(LoadingState());
+
       RawData result =
           await _authRepository.forGetPassword(email: event.emailAddress);
       if (result.operationResult == OperationResult.success) {

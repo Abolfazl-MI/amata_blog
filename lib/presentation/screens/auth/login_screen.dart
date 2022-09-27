@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -143,6 +144,22 @@ class LoginScreen extends StatelessWidget {
                           color: SolidColors.red,
                         ),
                       ));
+            });
+          }
+          if(state is LoadingState){
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              showDialog(context: context, builder: (context)=>Dialog(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height/4,
+                  color: SolidColors.darkGrey,
+
+                  
+                  child: Center(
+                    child: Lottie.asset(Assets.lotties.amtaLoading ),
+                  ),
+                ),
+              ));
             });
           }
           if (state is AuthenticatedState) {
